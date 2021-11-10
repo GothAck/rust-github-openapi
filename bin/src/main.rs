@@ -56,14 +56,14 @@ impl PropType {
     type_
   }
 
-  fn to_field(&self, name: &String) -> codegen2::Field {
+  fn to_field(&self, name: &str) -> codegen2::Field {
     let mut serde_annotations = self.serde_annotations.clone();
     if ! self.required {
       serde_annotations.push("skip_serializing_if = \"Option::is_none\"".to_string());
     }
     let mut field = codegen2::Field::new(name, self.to_prop_type());
-    if serde_annotations.len() > 0 {
-      field.annotation(vec![&format!("#[serde({})]", serde_annotations.join(", ")).to_string()]);
+    if ! serde_annotations.is_empty() {
+      field.annotation(vec![&format!("#[serde({})]", serde_annotations.join(", "))]);
     }
     if let Some(doc) = &self.doc {
       field.doc(doc.iter().map(|v| v.as_str()).collect());
@@ -86,7 +86,7 @@ impl Builder {
   }
 
   fn cur_scope_or_module(&mut self) -> &mut codegen2::Scope {
-    if self.module_path.len() == 0 {
+    if self.module_path.is_empty() {
       return self.scope.as_mut();
     }
     let mut iter = self.module_path.iter();
@@ -98,7 +98,7 @@ impl Builder {
   }
 
   fn cur_module(&mut self) -> Option<&mut codegen2::Module> {
-    if self.module_path.len() == 0 {
+    if self.module_path.is_empty() {
       return None;
     }
     let mut iter = self.module_path.iter();
@@ -109,11 +109,11 @@ impl Builder {
     Some(module)
   }
 
-  fn get_proptype_box(&mut self, parent_name: &String, prop_name: &String, val: &openapiv3::ReferenceOr<Box<openapiv3::Schema>>) -> PropType {
+  fn get_proptype_box(&mut self, parent_name: &str, prop_name: &str, val: &openapiv3::ReferenceOr<Box<openapiv3::Schema>>) -> PropType {
     self.get_proptype(parent_name, prop_name, &val.clone().unbox())
   }
 
-  fn get_proptype(&mut self, parent_name: &String, prop_name: &String, val: &openapiv3::ReferenceOr<openapiv3::Schema>) -> PropType {
+  fn get_proptype(&mut self, parent_name: &str, prop_name: &str, val: &openapiv3::ReferenceOr<openapiv3::Schema>) -> PropType {
     let mut res = PropType::new();
     match val {
       openapiv3::ReferenceOr::Item(item) => {
@@ -124,14 +124,14 @@ impl Builder {
             openapiv3::Type::Number(_) => res.type_ = "i64".to_string(),
             openapiv3::Type::Integer(_) => res.type_ = "i64".to_string(),
             openapiv3::Type::Object(obj) => {
-              let name = &format!("{}-{}", parent_name, prop_name).to_string().to_case(Case::Pascal);
-              self.new_struct(name, &obj);
+              let name = &format!("{}-{}", parent_name, prop_name).to_case(Case::Pascal);
+              self.new_struct(name, obj);
               res.type_ = name.clone();
             },
             openapiv3::Type::Array(arr) => {
               res.type_ = "Vec".to_string();
               let mut subtype = Box::from(self.get_proptype_box(parent_name, prop_name, &arr.items));
-              if subtype.type_ == "" {
+              if subtype.type_.is_empty() {
                 subtype.type_ = "HashMap<String, String>".to_string();
               }
               res.subtype = Some(subtype);
@@ -139,19 +139,19 @@ impl Builder {
             openapiv3::Type::Boolean {} => res.type_ = "bool".to_string(),
           },
           openapiv3::SchemaKind::OneOf {one_of} => {
-            let name = &format!("{}-{}-OneOf", parent_name, prop_name).to_string().to_case(Case::Pascal);
-            let sub_name = &format!("{}-{}", parent_name, prop_name).to_string().to_case(Case::Pascal);
-            let enm = self.new_enum(name, sub_name, &one_of);
+            let name = &format!("{}-{}-OneOf", parent_name, prop_name).to_case(Case::Pascal);
+            let sub_name = &format!("{}-{}", parent_name, prop_name).to_case(Case::Pascal);
+            let enm = self.new_enum(name, sub_name, one_of);
             enm.doc("OneOf");
             enm.r#macro("#[serde(untagged)]");
             res.type_ = name.clone();
           },
           openapiv3::SchemaKind::AllOf {all_of: _} => { error!("UNHANDLED: Prop type AllOf {}", parent_name) },
           openapiv3::SchemaKind::AnyOf {any_of} => {
-            let name = &format!("{}-{}-OneOf", parent_name, prop_name).to_string().to_case(Case::Pascal);
-            let sub_name = &format!("{}-{}", parent_name, prop_name).to_string().to_case(Case::Pascal);
-            let enm = self.new_enum(name, sub_name, &any_of);
-            enm.doc(&format!("AnyOf"));
+            let name = &format!("{}-{}-OneOf", parent_name, prop_name).to_case(Case::Pascal);
+            let sub_name = &format!("{}-{}", parent_name, prop_name).to_case(Case::Pascal);
+            let enm = self.new_enum(name, sub_name, any_of);
+            enm.doc(&"AnyOf".to_string());
             enm.r#macro("#[serde(untagged)]");
             res.type_ = name.clone();
           },
@@ -166,7 +166,7 @@ impl Builder {
           error!("Prop reference {} INVALID", reference);
         } else {
           let reference: String = reference.strip_prefix("#/").unwrap().to_string();
-          let mut reference_arr: Vec<String> = reference.split("/").map(|v| v.to_string()).collect();
+          let mut reference_arr: Vec<String> = reference.split('/').map(|v| v.to_string()).collect();
           let last = reference_arr.pop().unwrap();
           reference_arr.insert(0, "crate".to_string());
           reference_arr.push(last.to_case(Case::Pascal));
@@ -179,7 +179,7 @@ impl Builder {
     res
   }
 
-  fn new_enum(&mut self, name: &String, sub_name: &String, val: &Vec<openapiv3::ReferenceOr<openapiv3::Schema>>) -> &mut codegen2::Enum {
+  fn new_enum(&mut self, name: &str, sub_name: &str, val: &[openapiv3::ReferenceOr<openapiv3::Schema>]) -> &mut codegen2::Enum {
     let mut variants: Vec<codegen2::Variant> = vec![];
 
     for (i, variant) in val.iter().enumerate() {
@@ -202,11 +202,11 @@ impl Builder {
     enm
   }
 
-  fn new_struct(&mut self, name: &String, val: &openapiv3::ObjectType) -> &mut codegen2::Struct {
+  fn new_struct(&mut self, name: &str, val: &openapiv3::ObjectType) -> &mut codegen2::Struct {
     let mut fields: Vec<codegen2::Field> = vec![];
     let required: HashSet<&String> = val.required.iter().collect();
     for (prop_name, prop) in &val.properties {
-      let mut proptype = self.get_proptype_box(name, prop_name, &prop);
+      let mut proptype = self.get_proptype_box(name, prop_name, prop);
 
       proptype.required = required.contains(prop_name);
 
@@ -267,7 +267,7 @@ impl Builder {
     str
   }
 
-  fn new_typedef(&mut self, name: &String, val: &openapiv3::Type) {
+  fn new_typedef(&mut self, name: &str, val: &openapiv3::Type) {
     let name = name.to_case(Case::Pascal);
     match val {
       openapiv3::Type::String(_) => {
@@ -292,7 +292,7 @@ impl Builder {
     }
   }
 
-  fn new_anytypedef(&mut self, name: &String) {
+  fn new_anytypedef(&mut self, name: &str) {
     let name = name.to_case(Case::Pascal);
     self.cur_scope_or_module().raw(&format!("pub type {} = HashMap<String, String>;", name));
   }
@@ -306,10 +306,10 @@ fn main() -> anyhow::Result<()> {
 
   let openapi: OpenAPI = match api_spec.extension().map(|v| v.to_str()).flatten() {
     Some("json") => {
-      serde_json::from_reader(File::open(api_spec).unwrap()).map_err(|e| anyhow::Error::from(e))
+      serde_json::from_reader(File::open(api_spec).unwrap()).map_err(anyhow::Error::from)
     },
     Some("yaml") => {
-      serde_yaml::from_reader(File::open(api_spec).unwrap()).map_err(|e| anyhow::Error::from(e))
+      serde_yaml::from_reader(File::open(api_spec).unwrap()).map_err(anyhow::Error::from)
     },
     Some(ext) => Result::Err(anyhow::anyhow!("Invalid file extension {:?}", ext)),
     None => Result::Err(anyhow::anyhow!("Invalid file type {:?}", api_spec))
@@ -337,7 +337,7 @@ fn main() -> anyhow::Result<()> {
                 openapiv3::Type::String(_) => { builder.new_typedef(&name, &type_); },
                 openapiv3::Type::Number(_) => { builder.new_typedef(&name, &type_); },
                 openapiv3::Type::Integer(_) => { builder.new_typedef(&name, &type_); },
-                openapiv3::Type::Object(val) => { builder.new_struct(&name, &val); },
+                openapiv3::Type::Object(val) => { builder.new_struct(&name, val); },
                 openapiv3::Type::Array(_) => { builder.new_typedef(&name, &type_); },
                 openapiv3::Type::Boolean {} => { builder.new_typedef(&name, &type_); },
               }
