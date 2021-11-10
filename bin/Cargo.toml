@@ -1,6 +1,12 @@
 [package]
 name = "github-openapi-builder"
-version = "0.1.0"
+version = "0.1.1"
+license = "MIT"
+authors = ["Greg \"GothAck\" Miell <rust@greg.gothack.ninja>"]
+description = "Github OpenAPI Structs"
+homepage = "https://github.com/GothAck/rust-github-openapi"
+repository = "https://github.com/GothAck/rust-github-openapi"
+readme = "README.md"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

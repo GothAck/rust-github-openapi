@@ -1,12 +1,12 @@
 #![allow(non_camel_case_types, dead_code)]
 
-mod components {
-    mod schemas {
+pub mod components {
+    pub mod schemas {
         use serde::{Serialize, Deserialize};
         use std::collections::HashMap;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableSimpleUser {
+        pub struct NullableSimpleUser {
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -35,7 +35,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IntegrationPermissions {
+        pub struct IntegrationPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             issues: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -49,7 +49,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Integration {
+        pub struct Integration {
             id: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             slug: Option<String>,
@@ -77,7 +77,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BasicError {
+        pub struct BasicError {
             #[serde(skip_serializing_if = "Option::is_none")]
             message: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -89,28 +89,28 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ValidationErrorSimple {
+        pub struct ValidationErrorSimple {
             message: String,
             documentation_url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             errors: Option<Vec<String>>,
         }
 
-        type WebhookConfigUrl = String;
+        pub type WebhookConfigUrl = String;
 
-        type WebhookConfigContentType = String;
+        pub type WebhookConfigContentType = String;
 
-        type WebhookConfigSecret = String;
+        pub type WebhookConfigSecret = String;
 
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum WebhookConfigInsecureSsl {
+        pub enum WebhookConfigInsecureSsl {
             String(String),
             i64(i64),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WebhookConfig {
+        pub struct WebhookConfig {
             /// Ref components/schemas/webhook-config-url
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<crate::components::schemas::WebhookConfigUrl>,
@@ -126,7 +126,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDeliveryItem {
+        pub struct HookDeliveryItem {
             id: i64,
             guid: String,
             delivered_at: String,
@@ -141,7 +141,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimError {
+        pub struct ScimError {
             #[serde(skip_serializing_if = "Option::is_none")]
             message: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -159,14 +159,14 @@ mod components {
         /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum ValidationErrorErrorsValueOneOf {
+        pub enum ValidationErrorErrorsValueOneOf {
             String(String),
             i64(i64),
             Vec(Vec<String>),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ValidationErrorErrors {
+        pub struct ValidationErrorErrors {
             #[serde(skip_serializing_if = "Option::is_none")]
             resource: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -181,7 +181,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ValidationError {
+        pub struct ValidationError {
             message: String,
             documentation_url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -189,28 +189,28 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDeliveryRequestHeaders;
+        pub struct HookDeliveryRequestHeaders;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDeliveryRequestPayload;
+        pub struct HookDeliveryRequestPayload;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDeliveryRequest {
+        pub struct HookDeliveryRequest {
             headers: Option<HookDeliveryRequestHeaders>,
             payload: Option<HookDeliveryRequestPayload>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDeliveryResponseHeaders;
+        pub struct HookDeliveryResponseHeaders;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDeliveryResponse {
+        pub struct HookDeliveryResponse {
             headers: Option<HookDeliveryResponseHeaders>,
             payload: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookDelivery {
+        pub struct HookDelivery {
             id: i64,
             guid: String,
             delivered_at: String,
@@ -229,7 +229,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SimpleUser {
+        pub struct SimpleUser {
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -258,7 +258,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Enterprise {
+        pub struct Enterprise {
             #[serde(skip_serializing_if = "Option::is_none")]
             description: Option<String>,
             html_url: String,
@@ -274,7 +274,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AppPermissions {
+        pub struct AppPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             actions: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -342,13 +342,13 @@ mod components {
         /// AnyOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum InstallationAccountOneOf {
+        pub enum InstallationAccountOneOf {
             SimpleUser(crate::components::schemas::SimpleUser),
             Enterprise(crate::components::schemas::Enterprise),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Installation {
+        pub struct Installation {
             id: i64,
             account: Option<InstallationAccountOneOf>,
             repository_selection: String,
@@ -377,7 +377,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableLicenseSimple {
+        pub struct NullableLicenseSimple {
             key: String,
             name: String,
             url: Option<String>,
@@ -388,7 +388,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositoryPermissions {
+        pub struct RepositoryPermissions {
             admin: bool,
             pull: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -399,7 +399,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositoryTemplateRepositoryOwner {
+        pub struct RepositoryTemplateRepositoryOwner {
             #[serde(skip_serializing_if = "Option::is_none")]
             login: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -439,7 +439,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositoryTemplateRepositoryPermissions {
+        pub struct RepositoryTemplateRepositoryPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             admin: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -453,7 +453,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositoryTemplateRepository {
+        pub struct RepositoryTemplateRepository {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -619,7 +619,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Repository {
+        pub struct Repository {
             id: i64,
             node_id: String,
             name: String,
@@ -733,7 +733,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct InstallationToken {
+        pub struct InstallationToken {
             token: String,
             expires_at: String,
             /// Ref components/schemas/app-permissions
@@ -752,14 +752,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ApplicationGrantApp {
+        pub struct ApplicationGrantApp {
             client_id: String,
             name: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ApplicationGrant {
+        pub struct ApplicationGrant {
             id: i64,
             url: String,
             app: ApplicationGrantApp,
@@ -772,7 +772,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableScopedInstallation {
+        pub struct NullableScopedInstallation {
             /// Ref components/schemas/app-permissions
             permissions: crate::components::schemas::AppPermissions,
             repository_selection: String,
@@ -787,14 +787,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuthorizationApp {
+        pub struct AuthorizationApp {
             client_id: String,
             name: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Authorization {
+        pub struct Authorization {
             id: i64,
             url: String,
             scopes: Option<Vec<String>>,
@@ -817,7 +817,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeOfConduct {
+        pub struct CodeOfConduct {
             key: String,
             name: String,
             url: String,
@@ -826,14 +826,14 @@ mod components {
             html_url: Option<String>,
         }
 
-        type EnabledOrganizations = String;
+        pub type EnabledOrganizations = String;
 
-        type AllowedActions = String;
+        pub type AllowedActions = String;
 
-        type SelectedActionsUrl = String;
+        pub type SelectedActionsUrl = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsEnterprisePermissions {
+        pub struct ActionsEnterprisePermissions {
             /// Ref components/schemas/enabled-organizations
             enabled_organizations: crate::components::schemas::EnabledOrganizations,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -847,7 +847,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationSimple {
+        pub struct OrganizationSimple {
             login: String,
             id: i64,
             node_id: String,
@@ -863,7 +863,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SelectedActions {
+        pub struct SelectedActions {
             #[serde(skip_serializing_if = "Option::is_none")]
             github_owned_allowed: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -873,7 +873,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RunnerGroupsEnterprise {
+        pub struct RunnerGroupsEnterprise {
             id: i64,
             name: String,
             visibility: String,
@@ -885,7 +885,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RunnerLabels {
+        pub struct RunnerLabels {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -895,7 +895,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Runner {
+        pub struct Runner {
             id: i64,
             name: String,
             os: String,
@@ -905,7 +905,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RunnerApplication {
+        pub struct RunnerApplication {
             os: String,
             architecture: String,
             download_url: String,
@@ -917,10 +917,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuthenticationTokenPermissions;
+        pub struct AuthenticationTokenPermissions;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuthenticationToken {
+        pub struct AuthenticationToken {
             token: String,
             expires_at: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -934,28 +934,28 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEventActorLocation {
+        pub struct AuditLogEventActorLocation {
             #[serde(skip_serializing_if = "Option::is_none")]
             country_name: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEventData;
+        pub struct AuditLogEventData;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEventConfig;
+        pub struct AuditLogEventConfig;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEventConfigWas;
+        pub struct AuditLogEventConfigWas;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEventEvents;
+        pub struct AuditLogEventEvents;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEventEventsWere;
+        pub struct AuditLogEventEventsWere;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AuditLogEvent {
+        pub struct AuditLogEvent {
             #[serde(rename="@timestamp", skip_serializing_if = "Option::is_none")]
             timestamp: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1039,7 +1039,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsBillingUsageMinutesUsedBreakdown {
+        pub struct ActionsBillingUsageMinutesUsedBreakdown {
             #[serde(rename="UBUNTU", skip_serializing_if = "Option::is_none")]
             ubuntu: Option<i64>,
             #[serde(rename="MACOS", skip_serializing_if = "Option::is_none")]
@@ -1049,7 +1049,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsBillingUsage {
+        pub struct ActionsBillingUsage {
             total_minutes_used: i64,
             total_paid_minutes_used: i64,
             included_minutes: i64,
@@ -1057,21 +1057,21 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PackagesBillingUsage {
+        pub struct PackagesBillingUsage {
             total_gigabytes_bandwidth_used: i64,
             total_paid_gigabytes_bandwidth_used: i64,
             included_gigabytes_bandwidth: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CombinedBillingUsage {
+        pub struct CombinedBillingUsage {
             days_left_in_billing_cycle: i64,
             estimated_paid_storage_for_month: i64,
             estimated_storage_for_month: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Actor {
+        pub struct Actor {
             id: i64,
             login: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1082,7 +1082,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableMilestone {
+        pub struct NullableMilestone {
             url: String,
             html_url: String,
             labels_url: String,
@@ -1103,7 +1103,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableIntegrationPermissions {
+        pub struct NullableIntegrationPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             issues: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1117,7 +1117,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableIntegration {
+        pub struct NullableIntegration {
             id: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             slug: Option<String>,
@@ -1144,10 +1144,10 @@ mod components {
             pem: Option<String>,
         }
 
-        type AuthorAssociation = String;
+        pub type AuthorAssociation = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReactionRollup {
+        pub struct ReactionRollup {
             url: String,
             total_count: i64,
             #[serde(rename="+1")]
@@ -1163,7 +1163,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueLabels1 {
+        pub struct IssueLabels1 {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1183,13 +1183,13 @@ mod components {
         /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum IssueLabelsOneOf {
+        pub enum IssueLabelsOneOf {
             String(String),
             IssueLabels1(IssueLabels1),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssuePullRequest {
+        pub struct IssuePullRequest {
             #[serde(skip_serializing_if = "Option::is_none")]
             merged_at: Option<String>,
             diff_url: Option<String>,
@@ -1199,7 +1199,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Issue {
+        pub struct Issue {
             id: i64,
             node_id: String,
             url: String,
@@ -1254,7 +1254,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueComment {
+        pub struct IssueComment {
             id: i64,
             node_id: String,
             url: String,
@@ -1281,14 +1281,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EventRepo {
+        pub struct EventRepo {
             id: i64,
             name: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EventPayloadPages {
+        pub struct EventPayloadPages {
             #[serde(skip_serializing_if = "Option::is_none")]
             page_name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1304,7 +1304,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EventPayload {
+        pub struct EventPayload {
             #[serde(skip_serializing_if = "Option::is_none")]
             action: Option<String>,
             /// Ref components/schemas/issue
@@ -1318,7 +1318,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Event {
+        pub struct Event {
             id: String,
             #[serde(rename="type")]
             type_: Option<String>,
@@ -1334,14 +1334,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LinkWithType {
+        pub struct LinkWithType {
             href: String,
             #[serde(rename="type")]
             type_: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FeedLinks {
+        pub struct FeedLinks {
             /// Ref components/schemas/link-with-type
             timeline: crate::components::schemas::LinkWithType,
             /// Ref components/schemas/link-with-type
@@ -1366,7 +1366,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Feed {
+        pub struct Feed {
             timeline_url: String,
             user_url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1386,10 +1386,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BaseGistFiles;
+        pub struct BaseGistFiles;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BaseGist {
+        pub struct BaseGist {
             url: String,
             forks_url: String,
             commits_url: String,
@@ -1419,7 +1419,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PublicUserPlan {
+        pub struct PublicUserPlan {
             collaborators: i64,
             name: String,
             space: i64,
@@ -1427,7 +1427,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PublicUser {
+        pub struct PublicUser {
             login: String,
             id: i64,
             node_id: String,
@@ -1479,7 +1479,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistHistoryChangeStatus {
+        pub struct GistHistoryChangeStatus {
             #[serde(skip_serializing_if = "Option::is_none")]
             total: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1489,7 +1489,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistHistory {
+        pub struct GistHistory {
             /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             user: Option<crate::components::schemas::NullableSimpleUser>,
@@ -1504,7 +1504,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistSimpleForks {
+        pub struct GistSimpleForks {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1519,10 +1519,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistSimpleForkOfFiles;
+        pub struct GistSimpleForkOfFiles;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistSimpleForkOf {
+        pub struct GistSimpleForkOf {
             url: String,
             forks_url: String,
             commits_url: String,
@@ -1552,10 +1552,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistSimpleFiles;
+        pub struct GistSimpleFiles;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistSimple {
+        pub struct GistSimple {
             #[serde(skip_serializing_if = "Option::is_none")]
             forks: Option<Vec<GistSimpleForks>>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1602,7 +1602,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistComment {
+        pub struct GistComment {
             id: i64,
             node_id: String,
             url: String,
@@ -1616,7 +1616,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistCommitChangeStatus {
+        pub struct GistCommitChangeStatus {
             #[serde(skip_serializing_if = "Option::is_none")]
             total: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1626,7 +1626,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GistCommit {
+        pub struct GistCommit {
             url: String,
             version: String,
             /// Ref components/schemas/nullable-simple-user
@@ -1636,13 +1636,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitignoreTemplate {
+        pub struct GitignoreTemplate {
             name: String,
             source: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LicenseSimple {
+        pub struct LicenseSimple {
             key: String,
             name: String,
             url: Option<String>,
@@ -1653,7 +1653,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct License {
+        pub struct License {
             key: String,
             name: String,
             spdx_id: Option<String>,
@@ -1670,7 +1670,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MarketplaceListingPlan {
+        pub struct MarketplaceListingPlan {
             url: String,
             accounts_url: String,
             id: i64,
@@ -1687,7 +1687,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MarketplacePurchaseMarketplacePendingChange {
+        pub struct MarketplacePurchaseMarketplacePendingChange {
             #[serde(skip_serializing_if = "Option::is_none")]
             is_installed: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1702,7 +1702,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MarketplacePurchaseMarketplacePurchase {
+        pub struct MarketplacePurchaseMarketplacePurchase {
             #[serde(skip_serializing_if = "Option::is_none")]
             billing_cycle: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1723,7 +1723,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MarketplacePurchase {
+        pub struct MarketplacePurchase {
             url: String,
             #[serde(rename="type")]
             type_: String,
@@ -1739,7 +1739,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ApiOverviewSshKeyFingerprints {
+        pub struct ApiOverviewSshKeyFingerprints {
             #[serde(rename="SHA256_RSA", skip_serializing_if = "Option::is_none")]
             sha_256_rsa: Option<String>,
             #[serde(rename="SHA256_DSA", skip_serializing_if = "Option::is_none")]
@@ -1751,7 +1751,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ApiOverview {
+        pub struct ApiOverview {
             verifiable_password_authentication: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             ssh_key_fingerprints: Option<ApiOverviewSshKeyFingerprints>,
@@ -1776,7 +1776,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableRepositoryPermissions {
+        pub struct NullableRepositoryPermissions {
             admin: bool,
             pull: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1787,7 +1787,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableRepositoryTemplateRepositoryOwner {
+        pub struct NullableRepositoryTemplateRepositoryOwner {
             #[serde(skip_serializing_if = "Option::is_none")]
             login: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1827,7 +1827,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableRepositoryTemplateRepositoryPermissions {
+        pub struct NullableRepositoryTemplateRepositoryPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             admin: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1841,7 +1841,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableRepositoryTemplateRepository {
+        pub struct NullableRepositoryTemplateRepository {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2007,7 +2007,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableRepository {
+        pub struct NullableRepository {
             id: i64,
             node_id: String,
             name: String,
@@ -2121,7 +2121,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MinimalRepositoryPermissions {
+        pub struct MinimalRepositoryPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             admin: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2135,7 +2135,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MinimalRepositoryLicense {
+        pub struct MinimalRepositoryLicense {
             #[serde(skip_serializing_if = "Option::is_none")]
             key: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2149,7 +2149,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MinimalRepository {
+        pub struct MinimalRepository {
             id: i64,
             node_id: String,
             name: String,
@@ -2280,7 +2280,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ThreadSubject {
+        pub struct ThreadSubject {
             title: String,
             url: String,
             latest_comment_url: String,
@@ -2289,7 +2289,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Thread {
+        pub struct Thread {
             id: String,
             /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
@@ -2303,7 +2303,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ThreadSubscription {
+        pub struct ThreadSubscription {
             subscribed: bool,
             ignored: bool,
             reason: Option<String>,
@@ -2316,13 +2316,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationCustomRepositoryRole {
+        pub struct OrganizationCustomRepositoryRole {
             id: i64,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationFullPlan {
+        pub struct OrganizationFullPlan {
             name: String,
             space: i64,
             private_repos: i64,
@@ -2333,7 +2333,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationFull {
+        pub struct OrganizationFull {
             login: String,
             id: i64,
             node_id: String,
@@ -2407,10 +2407,10 @@ mod components {
             updated_at: String,
         }
 
-        type EnabledRepositories = String;
+        pub type EnabledRepositories = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsOrganizationPermissions {
+        pub struct ActionsOrganizationPermissions {
             /// Ref components/schemas/enabled-repositories
             enabled_repositories: crate::components::schemas::EnabledRepositories,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2424,7 +2424,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RunnerGroupsOrg {
+        pub struct RunnerGroupsOrg {
             id: i64,
             name: String,
             visibility: String,
@@ -2439,7 +2439,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationActionsSecret {
+        pub struct OrganizationActionsSecret {
             name: String,
             created_at: String,
             updated_at: String,
@@ -2449,7 +2449,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsPublicKey {
+        pub struct ActionsPublicKey {
             key_id: String,
             key: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2463,10 +2463,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EmptyObject;
+        pub struct EmptyObject;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CredentialAuthorization {
+        pub struct CredentialAuthorization {
             login: String,
             credential_id: i64,
             credential_type: String,
@@ -2488,13 +2488,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ExternalGroupTeams {
+        pub struct ExternalGroupTeams {
             team_id: i64,
             team_name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ExternalGroupMembers {
+        pub struct ExternalGroupMembers {
             member_id: i64,
             member_login: String,
             member_name: String,
@@ -2502,7 +2502,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ExternalGroup {
+        pub struct ExternalGroup {
             group_id: i64,
             group_name: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2512,20 +2512,20 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ExternalGroupsGroups {
+        pub struct ExternalGroupsGroups {
             group_id: i64,
             group_name: String,
             updated_at: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ExternalGroups {
+        pub struct ExternalGroups {
             #[serde(skip_serializing_if = "Option::is_none")]
             groups: Option<Vec<ExternalGroupsGroups>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationInvitation {
+        pub struct OrganizationInvitation {
             id: i64,
             login: Option<String>,
             email: Option<String>,
@@ -2543,7 +2543,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrgHookConfig {
+        pub struct OrgHookConfig {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2555,7 +2555,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrgHook {
+        pub struct OrgHook {
             id: i64,
             url: String,
             ping_url: String,
@@ -2571,20 +2571,20 @@ mod components {
             type_: String,
         }
 
-        type InteractionGroup = String;
+        pub type InteractionGroup = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct InteractionLimitResponse {
+        pub struct InteractionLimitResponse {
             /// Ref components/schemas/interaction-group
             limit: crate::components::schemas::InteractionGroup,
             origin: String,
             expires_at: String,
         }
 
-        type InteractionExpiry = String;
+        pub type InteractionExpiry = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct InteractionLimit {
+        pub struct InteractionLimit {
             /// Ref components/schemas/interaction-group
             limit: crate::components::schemas::InteractionGroup,
             /// Ref components/schemas/interaction-expiry
@@ -2593,7 +2593,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableTeamSimple {
+        pub struct NullableTeamSimple {
             id: i64,
             node_id: String,
             url: String,
@@ -2611,7 +2611,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamPermissions {
+        pub struct TeamPermissions {
             pull: bool,
             triage: bool,
             push: bool,
@@ -2620,7 +2620,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Team {
+        pub struct Team {
             id: i64,
             node_id: String,
             name: String,
@@ -2640,12 +2640,12 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrgMembershipPermissions {
+        pub struct OrgMembershipPermissions {
             can_create_repository: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrgMembership {
+        pub struct OrgMembership {
             url: String,
             state: String,
             role: String,
@@ -2659,7 +2659,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Migration {
+        pub struct Migration {
             id: i64,
             /// Ref components/schemas/nullable-simple-user
             owner: crate::components::schemas::NullableSimpleUser,
@@ -2683,7 +2683,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableMinimalRepositoryPermissions {
+        pub struct NullableMinimalRepositoryPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             admin: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2697,7 +2697,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableMinimalRepositoryLicense {
+        pub struct NullableMinimalRepositoryLicense {
             #[serde(skip_serializing_if = "Option::is_none")]
             key: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2711,7 +2711,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableMinimalRepository {
+        pub struct NullableMinimalRepository {
             id: i64,
             node_id: String,
             name: String,
@@ -2842,7 +2842,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Package {
+        pub struct Package {
             id: i64,
             name: String,
             package_type: String,
@@ -2861,18 +2861,18 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PackageVersionMetadataContainer {
+        pub struct PackageVersionMetadataContainer {
             tags: Vec<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PackageVersionMetadataDocker {
+        pub struct PackageVersionMetadataDocker {
             #[serde(skip_serializing_if = "Option::is_none")]
             tag: Option<Vec<String>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PackageVersionMetadata {
+        pub struct PackageVersionMetadata {
             package_type: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             container: Option<PackageVersionMetadataContainer>,
@@ -2881,7 +2881,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PackageVersion {
+        pub struct PackageVersion {
             id: i64,
             name: String,
             url: String,
@@ -2901,7 +2901,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Project {
+        pub struct Project {
             owner_url: String,
             url: String,
             html_url: String,
@@ -2922,20 +2922,20 @@ mod components {
             private: Option<bool>,
         }
 
-        type AlertNumber = i64;
+        pub type AlertNumber = i64;
 
-        type AlertCreatedAt = String;
+        pub type AlertCreatedAt = String;
 
-        type AlertUrl = String;
+        pub type AlertUrl = String;
 
-        type AlertHtmlUrl = String;
+        pub type AlertHtmlUrl = String;
 
-        type SecretScanningAlertState = String;
+        pub type SecretScanningAlertState = String;
 
-        type SecretScanningAlertResolution = HashMap<String, String>;
+        pub type SecretScanningAlertResolution = HashMap<String, String>;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct OrganizationSecretScanningAlert {
+        pub struct OrganizationSecretScanningAlert {
             /// Ref components/schemas/alert-number
             #[serde(skip_serializing_if = "Option::is_none")]
             number: Option<crate::components::schemas::AlertNumber>,
@@ -2971,7 +2971,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GroupMappingGroups {
+        pub struct GroupMappingGroups {
             group_id: String,
             group_name: String,
             group_description: String,
@@ -2982,13 +2982,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GroupMapping {
+        pub struct GroupMapping {
             #[serde(skip_serializing_if = "Option::is_none")]
             groups: Option<Vec<GroupMappingGroups>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamFull {
+        pub struct TeamFull {
             id: i64,
             node_id: String,
             url: String,
@@ -3015,7 +3015,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamDiscussion {
+        pub struct TeamDiscussion {
             /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
             body: String,
@@ -3040,7 +3040,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamDiscussionComment {
+        pub struct TeamDiscussionComment {
             /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
             body: String,
@@ -3060,7 +3060,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Reaction {
+        pub struct Reaction {
             id: i64,
             node_id: String,
             /// Ref components/schemas/nullable-simple-user
@@ -3070,21 +3070,21 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamMembership {
+        pub struct TeamMembership {
             url: String,
             role: String,
             state: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamProjectPermissions {
+        pub struct TeamProjectPermissions {
             read: bool,
             write: bool,
             admin: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamProject {
+        pub struct TeamProject {
             owner_url: String,
             url: String,
             html_url: String,
@@ -3107,7 +3107,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamRepositoryPermissions {
+        pub struct TeamRepositoryPermissions {
             admin: bool,
             pull: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3118,7 +3118,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamRepository {
+        pub struct TeamRepository {
             id: i64,
             node_id: String,
             name: String,
@@ -3230,7 +3230,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProjectCard {
+        pub struct ProjectCard {
             url: String,
             id: i64,
             node_id: String,
@@ -3252,7 +3252,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProjectColumn {
+        pub struct ProjectColumn {
             url: String,
             project_url: String,
             cards_url: String,
@@ -3264,14 +3264,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProjectCollaboratorPermission {
+        pub struct ProjectCollaboratorPermission {
             permission: String,
             /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RateLimit {
+        pub struct RateLimit {
             limit: i64,
             remaining: i64,
             reset: i64,
@@ -3279,7 +3279,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RateLimitOverviewResources {
+        pub struct RateLimitOverviewResources {
             /// Ref components/schemas/rate-limit
             core: crate::components::schemas::RateLimit,
             /// Ref components/schemas/rate-limit
@@ -3302,14 +3302,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RateLimitOverview {
+        pub struct RateLimitOverview {
             resources: RateLimitOverviewResources,
             /// Ref components/schemas/rate-limit
             rate: crate::components::schemas::RateLimit,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeOfConductSimple {
+        pub struct CodeOfConductSimple {
             url: String,
             key: String,
             name: String,
@@ -3317,7 +3317,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FullRepositoryPermissions {
+        pub struct FullRepositoryPermissions {
             admin: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             maintain: Option<bool>,
@@ -3328,19 +3328,19 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FullRepositorySecurityAndAnalysisAdvancedSecurity {
+        pub struct FullRepositorySecurityAndAnalysisAdvancedSecurity {
             #[serde(skip_serializing_if = "Option::is_none")]
             status: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FullRepositorySecurityAndAnalysisSecretScanning {
+        pub struct FullRepositorySecurityAndAnalysisSecretScanning {
             #[serde(skip_serializing_if = "Option::is_none")]
             status: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FullRepositorySecurityAndAnalysis {
+        pub struct FullRepositorySecurityAndAnalysis {
             #[serde(skip_serializing_if = "Option::is_none")]
             advanced_security: Option<FullRepositorySecurityAndAnalysisAdvancedSecurity>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3348,7 +3348,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FullRepository {
+        pub struct FullRepository {
             id: i64,
             node_id: String,
             name: String,
@@ -3472,7 +3472,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Artifact {
+        pub struct Artifact {
             id: i64,
             node_id: String,
             name: String,
@@ -3486,7 +3486,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct JobSteps {
+        pub struct JobSteps {
             status: String,
             conclusion: Option<String>,
             name: String,
@@ -3498,7 +3498,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Job {
+        pub struct Job {
             id: i64,
             run_id: i64,
             run_url: String,
@@ -3523,10 +3523,10 @@ mod components {
             runner_group_name: Option<String>,
         }
 
-        type ActionsEnabled = bool;
+        pub type ActionsEnabled = bool;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsRepositoryPermissions {
+        pub struct ActionsRepositoryPermissions {
             /// Ref components/schemas/actions-enabled
             enabled: crate::components::schemas::ActionsEnabled,
             /// Ref components/schemas/allowed-actions
@@ -3538,14 +3538,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestMinimalHeadRepo {
+        pub struct PullRequestMinimalHeadRepo {
             id: i64,
             url: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestMinimalHead {
+        pub struct PullRequestMinimalHead {
             #[serde(rename="ref")]
             ref_: String,
             sha: String,
@@ -3553,14 +3553,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestMinimalBaseRepo {
+        pub struct PullRequestMinimalBaseRepo {
             id: i64,
             url: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestMinimalBase {
+        pub struct PullRequestMinimalBase {
             #[serde(rename="ref")]
             ref_: String,
             sha: String,
@@ -3568,7 +3568,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestMinimal {
+        pub struct PullRequestMinimal {
             id: i64,
             number: i64,
             url: String,
@@ -3577,19 +3577,19 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableSimpleCommitAuthor {
+        pub struct NullableSimpleCommitAuthor {
             name: String,
             email: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableSimpleCommitCommitter {
+        pub struct NullableSimpleCommitCommitter {
             name: String,
             email: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableSimpleCommit {
+        pub struct NullableSimpleCommit {
             id: String,
             tree_id: String,
             message: String,
@@ -3599,7 +3599,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRun {
+        pub struct WorkflowRun {
             id: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<String>,
@@ -3644,7 +3644,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EnvironmentApprovalsEnvironments {
+        pub struct EnvironmentApprovalsEnvironments {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3662,7 +3662,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EnvironmentApprovals {
+        pub struct EnvironmentApprovals {
             environments: Vec<EnvironmentApprovalsEnvironments>,
             state: String,
             /// Ref components/schemas/simple-user
@@ -3670,10 +3670,10 @@ mod components {
             comment: String,
         }
 
-        type DeploymentReviewerType = String;
+        pub type DeploymentReviewerType = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PendingDeploymentEnvironment {
+        pub struct PendingDeploymentEnvironment {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3689,13 +3689,13 @@ mod components {
         /// AnyOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum PendingDeploymentReviewersReviewerOneOf {
+        pub enum PendingDeploymentReviewersReviewerOneOf {
             SimpleUser(crate::components::schemas::SimpleUser),
             Team(crate::components::schemas::Team),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PendingDeploymentReviewers {
+        pub struct PendingDeploymentReviewers {
             /// Ref components/schemas/deployment-reviewer-type
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
             type_: Option<crate::components::schemas::DeploymentReviewerType>,
@@ -3704,7 +3704,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PendingDeployment {
+        pub struct PendingDeployment {
             environment: PendingDeploymentEnvironment,
             wait_timer: i64,
             wait_timer_started_at: Option<String>,
@@ -3713,18 +3713,18 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DeploymentPayload0;
+        pub struct DeploymentPayload0;
 
         /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum DeploymentPayloadOneOf {
+        pub enum DeploymentPayloadOneOf {
             DeploymentPayload0(DeploymentPayload0),
             String(String),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Deployment {
+        pub struct Deployment {
             url: String,
             id: i64,
             node_id: String,
@@ -3753,13 +3753,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillableUbuntuJobRuns {
+        pub struct WorkflowRunUsageBillableUbuntuJobRuns {
             job_id: i64,
             duration_ms: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillableUbuntu {
+        pub struct WorkflowRunUsageBillableUbuntu {
             total_ms: i64,
             jobs: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3767,13 +3767,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillableMacosJobRuns {
+        pub struct WorkflowRunUsageBillableMacosJobRuns {
             job_id: i64,
             duration_ms: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillableMacos {
+        pub struct WorkflowRunUsageBillableMacos {
             total_ms: i64,
             jobs: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3781,13 +3781,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillableWindowsJobRuns {
+        pub struct WorkflowRunUsageBillableWindowsJobRuns {
             job_id: i64,
             duration_ms: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillableWindows {
+        pub struct WorkflowRunUsageBillableWindows {
             total_ms: i64,
             jobs: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3795,7 +3795,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsageBillable {
+        pub struct WorkflowRunUsageBillable {
             #[serde(rename="UBUNTU", skip_serializing_if = "Option::is_none")]
             ubuntu: Option<WorkflowRunUsageBillableUbuntu>,
             #[serde(rename="MACOS", skip_serializing_if = "Option::is_none")]
@@ -3805,21 +3805,21 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowRunUsage {
+        pub struct WorkflowRunUsage {
             billable: WorkflowRunUsageBillable,
             #[serde(skip_serializing_if = "Option::is_none")]
             run_duration_ms: Option<i64>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ActionsSecret {
+        pub struct ActionsSecret {
             name: String,
             created_at: String,
             updated_at: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Workflow {
+        pub struct Workflow {
             id: i64,
             node_id: String,
             name: String,
@@ -3835,25 +3835,25 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowUsageBillableUbuntu {
+        pub struct WorkflowUsageBillableUbuntu {
             #[serde(skip_serializing_if = "Option::is_none")]
             total_ms: Option<i64>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowUsageBillableMacos {
+        pub struct WorkflowUsageBillableMacos {
             #[serde(skip_serializing_if = "Option::is_none")]
             total_ms: Option<i64>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowUsageBillableWindows {
+        pub struct WorkflowUsageBillableWindows {
             #[serde(skip_serializing_if = "Option::is_none")]
             total_ms: Option<i64>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowUsageBillable {
+        pub struct WorkflowUsageBillable {
             #[serde(rename="UBUNTU", skip_serializing_if = "Option::is_none")]
             ubuntu: Option<WorkflowUsageBillableUbuntu>,
             #[serde(rename="MACOS", skip_serializing_if = "Option::is_none")]
@@ -3863,25 +3863,25 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct WorkflowUsage {
+        pub struct WorkflowUsage {
             billable: WorkflowUsageBillable,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Autolink {
+        pub struct Autolink {
             id: i64,
             key_prefix: String,
             url_template: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchAdminEnforced {
+        pub struct ProtectedBranchAdminEnforced {
             url: String,
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchPullRequestReviewDismissalRestrictions {
+        pub struct ProtectedBranchPullRequestReviewDismissalRestrictions {
             #[serde(skip_serializing_if = "Option::is_none")]
             users: Option<Vec<crate::components::schemas::SimpleUser>>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3895,7 +3895,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchPullRequestReview {
+        pub struct ProtectedBranchPullRequestReview {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3907,7 +3907,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchRestrictionPolicyUsers {
+        pub struct BranchRestrictionPolicyUsers {
             #[serde(skip_serializing_if = "Option::is_none")]
             login: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3947,7 +3947,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchRestrictionPolicyTeams {
+        pub struct BranchRestrictionPolicyTeams {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3975,7 +3975,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchRestrictionPolicyAppsOwner {
+        pub struct BranchRestrictionPolicyAppsOwner {
             #[serde(skip_serializing_if = "Option::is_none")]
             login: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4025,7 +4025,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchRestrictionPolicyAppsPermissions {
+        pub struct BranchRestrictionPolicyAppsPermissions {
             #[serde(skip_serializing_if = "Option::is_none")]
             metadata: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4037,7 +4037,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchRestrictionPolicyApps {
+        pub struct BranchRestrictionPolicyApps {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4065,7 +4065,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchRestrictionPolicy {
+        pub struct BranchRestrictionPolicy {
             url: String,
             users_url: String,
             teams_url: String,
@@ -4076,7 +4076,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtectionRequiredStatusChecks {
+        pub struct BranchProtectionRequiredStatusChecks {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4089,37 +4089,37 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtectionRequiredLinearHistory {
+        pub struct BranchProtectionRequiredLinearHistory {
             #[serde(skip_serializing_if = "Option::is_none")]
             enabled: Option<bool>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtectionAllowForcePushes {
+        pub struct BranchProtectionAllowForcePushes {
             #[serde(skip_serializing_if = "Option::is_none")]
             enabled: Option<bool>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtectionAllowDeletions {
+        pub struct BranchProtectionAllowDeletions {
             #[serde(skip_serializing_if = "Option::is_none")]
             enabled: Option<bool>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtectionRequiredConversationResolution {
+        pub struct BranchProtectionRequiredConversationResolution {
             #[serde(skip_serializing_if = "Option::is_none")]
             enabled: Option<bool>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtectionRequiredSignatures {
+        pub struct BranchProtectionRequiredSignatures {
             url: String,
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchProtection {
+        pub struct BranchProtection {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4152,13 +4152,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ShortBranchCommit {
+        pub struct ShortBranchCommit {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ShortBranch {
+        pub struct ShortBranch {
             name: String,
             commit: ShortBranchCommit,
             protected: bool,
@@ -4170,7 +4170,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableGitUser {
+        pub struct NullableGitUser {
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4180,7 +4180,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Verification {
+        pub struct Verification {
             verified: bool,
             reason: String,
             payload: Option<String>,
@@ -4188,7 +4188,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DiffEntry {
+        pub struct DiffEntry {
             sha: String,
             filename: String,
             status: String,
@@ -4205,13 +4205,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitCommitTree {
+        pub struct CommitCommitTree {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitCommit {
+        pub struct CommitCommit {
             url: String,
             /// Ref components/schemas/nullable-git-user
             author: crate::components::schemas::NullableGitUser,
@@ -4226,7 +4226,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitParents {
+        pub struct CommitParents {
             sha: String,
             url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4234,7 +4234,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitStats {
+        pub struct CommitStats {
             #[serde(skip_serializing_if = "Option::is_none")]
             additions: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4244,7 +4244,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Commit {
+        pub struct Commit {
             url: String,
             sha: String,
             node_id: String,
@@ -4263,14 +4263,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchWithProtectionLinks {
+        pub struct BranchWithProtectionLinks {
             html: String,
             #[serde(rename="self")]
             self_: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchWithProtection {
+        pub struct BranchWithProtection {
             name: String,
             /// Ref components/schemas/commit
             commit: crate::components::schemas::Commit,
@@ -4287,7 +4287,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct StatusCheckPolicy {
+        pub struct StatusCheckPolicy {
             url: String,
             strict: bool,
             contexts: Vec<String>,
@@ -4295,7 +4295,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchRequiredPullRequestReviewsDismissalRestrictions {
+        pub struct ProtectedBranchRequiredPullRequestReviewsDismissalRestrictions {
             url: String,
             users_url: String,
             teams_url: String,
@@ -4304,7 +4304,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchRequiredPullRequestReviews {
+        pub struct ProtectedBranchRequiredPullRequestReviews {
             url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             dismiss_stale_reviews: Option<bool>,
@@ -4317,40 +4317,40 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchRequiredSignatures {
+        pub struct ProtectedBranchRequiredSignatures {
             url: String,
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchEnforceAdmins {
+        pub struct ProtectedBranchEnforceAdmins {
             url: String,
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchRequiredLinearHistory {
+        pub struct ProtectedBranchRequiredLinearHistory {
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchAllowForcePushes {
+        pub struct ProtectedBranchAllowForcePushes {
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchAllowDeletions {
+        pub struct ProtectedBranchAllowDeletions {
             enabled: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranchRequiredConversationResolution {
+        pub struct ProtectedBranchRequiredConversationResolution {
             #[serde(skip_serializing_if = "Option::is_none")]
             enabled: Option<bool>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ProtectedBranch {
+        pub struct ProtectedBranch {
             url: String,
             /// Ref components/schemas/status-check-policy
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4375,7 +4375,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DeploymentSimple {
+        pub struct DeploymentSimple {
             url: String,
             id: i64,
             node_id: String,
@@ -4398,7 +4398,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckRunOutput {
+        pub struct CheckRunOutput {
             title: Option<String>,
             summary: Option<String>,
             text: Option<String>,
@@ -4407,12 +4407,12 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckRunCheckSuite {
+        pub struct CheckRunCheckSuite {
             id: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckRun {
+        pub struct CheckRun {
             id: i64,
             head_sha: String,
             node_id: String,
@@ -4436,7 +4436,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckAnnotation {
+        pub struct CheckAnnotation {
             path: String,
             start_line: i64,
             end_line: i64,
@@ -4450,19 +4450,19 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SimpleCommitAuthor {
+        pub struct SimpleCommitAuthor {
             name: String,
             email: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SimpleCommitCommitter {
+        pub struct SimpleCommitCommitter {
             name: String,
             email: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SimpleCommit {
+        pub struct SimpleCommit {
             id: String,
             tree_id: String,
             message: String,
@@ -4472,7 +4472,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckSuite {
+        pub struct CheckSuite {
             id: i64,
             node_id: String,
             head_branch: Option<String>,
@@ -4496,40 +4496,40 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckSuitePreferencePreferencesAutoTriggerChecks {
+        pub struct CheckSuitePreferencePreferencesAutoTriggerChecks {
             app_id: i64,
             setting: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckSuitePreferencePreferences {
+        pub struct CheckSuitePreferencePreferences {
             #[serde(skip_serializing_if = "Option::is_none")]
             auto_trigger_checks: Option<Vec<CheckSuitePreferencePreferencesAutoTriggerChecks>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CheckSuitePreference {
+        pub struct CheckSuitePreference {
             preferences: CheckSuitePreferencePreferences,
             /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
         }
 
-        type CodeScanningAnalysisToolName = String;
+        pub type CodeScanningAnalysisToolName = String;
 
-        type CodeScanningAnalysisToolGuid = String;
+        pub type CodeScanningAnalysisToolGuid = String;
 
-        type CodeScanningRef = String;
+        pub type CodeScanningRef = String;
 
-        type CodeScanningAlertState = String;
+        pub type CodeScanningAlertState = String;
 
-        type AlertInstancesUrl = String;
+        pub type AlertInstancesUrl = String;
 
-        type CodeScanningAlertDismissedAt = String;
+        pub type CodeScanningAlertDismissedAt = String;
 
-        type CodeScanningAlertDismissedReason = HashMap<String, String>;
+        pub type CodeScanningAlertDismissedReason = HashMap<String, String>;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlertRuleSummary {
+        pub struct CodeScanningAlertRuleSummary {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4540,10 +4540,10 @@ mod components {
             description: Option<String>,
         }
 
-        type CodeScanningAnalysisToolVersion = String;
+        pub type CodeScanningAnalysisToolVersion = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAnalysisTool {
+        pub struct CodeScanningAnalysisTool {
             /// Ref components/schemas/code-scanning-analysis-tool-name
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<crate::components::schemas::CodeScanningAnalysisToolName>,
@@ -4555,14 +4555,14 @@ mod components {
             guid: Option<crate::components::schemas::CodeScanningAnalysisToolGuid>,
         }
 
-        type CodeScanningAnalysisAnalysisKey = String;
+        pub type CodeScanningAnalysisAnalysisKey = String;
 
-        type CodeScanningAlertEnvironment = String;
+        pub type CodeScanningAlertEnvironment = String;
 
-        type CodeScanningAnalysisCategory = String;
+        pub type CodeScanningAnalysisCategory = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlertLocation {
+        pub struct CodeScanningAlertLocation {
             #[serde(skip_serializing_if = "Option::is_none")]
             path: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4575,16 +4575,16 @@ mod components {
             end_column: Option<i64>,
         }
 
-        type CodeScanningAlertClassification = String;
+        pub type CodeScanningAlertClassification = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlertInstanceMessage {
+        pub struct CodeScanningAlertInstanceMessage {
             #[serde(skip_serializing_if = "Option::is_none")]
             text: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlertInstance {
+        pub struct CodeScanningAlertInstance {
             /// Ref components/schemas/code-scanning-ref
             #[serde(rename="ref", skip_serializing_if = "Option::is_none")]
             ref_: Option<crate::components::schemas::CodeScanningRef>,
@@ -4614,7 +4614,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlertItems {
+        pub struct CodeScanningAlertItems {
             /// Ref components/schemas/alert-number
             number: crate::components::schemas::AlertNumber,
             /// Ref components/schemas/alert-created-at
@@ -4642,7 +4642,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlertRule {
+        pub struct CodeScanningAlertRule {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4662,7 +4662,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAlert {
+        pub struct CodeScanningAlert {
             /// Ref components/schemas/alert-number
             number: crate::components::schemas::AlertNumber,
             /// Ref components/schemas/alert-created-at
@@ -4689,20 +4689,20 @@ mod components {
             most_recent_instance: crate::components::schemas::CodeScanningAlertInstance,
         }
 
-        type CodeScanningAlertSetState = String;
+        pub type CodeScanningAlertSetState = String;
 
-        type CodeScanningAnalysisSarifId = String;
+        pub type CodeScanningAnalysisSarifId = String;
 
-        type CodeScanningAnalysisCommitSha = String;
+        pub type CodeScanningAnalysisCommitSha = String;
 
-        type CodeScanningAnalysisEnvironment = String;
+        pub type CodeScanningAnalysisEnvironment = String;
 
-        type CodeScanningAnalysisCreatedAt = String;
+        pub type CodeScanningAnalysisCreatedAt = String;
 
-        type CodeScanningAnalysisUrl = String;
+        pub type CodeScanningAnalysisUrl = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAnalysis {
+        pub struct CodeScanningAnalysis {
             /// Ref components/schemas/code-scanning-ref
             #[serde(rename="ref")]
             ref_: crate::components::schemas::CodeScanningRef,
@@ -4732,15 +4732,15 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningAnalysisDeletion {
+        pub struct CodeScanningAnalysisDeletion {
             next_analysis_url: Option<String>,
             confirm_delete_url: Option<String>,
         }
 
-        type CodeScanningAnalysisSarifFile = String;
+        pub type CodeScanningAnalysisSarifFile = String;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningSarifsReceipt {
+        pub struct CodeScanningSarifsReceipt {
             /// Ref components/schemas/code-scanning-analysis-sarif-id
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<crate::components::schemas::CodeScanningAnalysisSarifId>,
@@ -4749,7 +4749,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeScanningSarifsStatus {
+        pub struct CodeScanningSarifsStatus {
             #[serde(skip_serializing_if = "Option::is_none")]
             processing_status: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4757,7 +4757,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableCodespaceMachine {
+        pub struct NullableCodespaceMachine {
             name: String,
             display_name: String,
             operating_system: String,
@@ -4767,7 +4767,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodespaceGitStatus {
+        pub struct CodespaceGitStatus {
             #[serde(skip_serializing_if = "Option::is_none")]
             ahead: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4781,7 +4781,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Codespace {
+        pub struct Codespace {
             id: i64,
             name: String,
             environment_id: Option<String>,
@@ -4810,7 +4810,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodespaceMachine {
+        pub struct CodespaceMachine {
             name: String,
             display_name: String,
             operating_system: String,
@@ -4820,7 +4820,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CollaboratorPermissions {
+        pub struct CollaboratorPermissions {
             pull: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             triage: Option<bool>,
@@ -4831,7 +4831,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Collaborator {
+        pub struct Collaborator {
             login: String,
             id: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4861,7 +4861,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositoryInvitation {
+        pub struct RepositoryInvitation {
             id: i64,
             /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
@@ -4879,7 +4879,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableCollaboratorPermissions {
+        pub struct NullableCollaboratorPermissions {
             pull: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             triage: Option<bool>,
@@ -4890,7 +4890,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableCollaborator {
+        pub struct NullableCollaborator {
             login: String,
             id: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4920,7 +4920,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositoryCollaboratorPermission {
+        pub struct RepositoryCollaboratorPermission {
             permission: String,
             role_name: String,
             /// Ref components/schemas/nullable-collaborator
@@ -4928,7 +4928,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitComment {
+        pub struct CommitComment {
             html_url: String,
             url: String,
             id: i64,
@@ -4950,25 +4950,25 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchShortCommit {
+        pub struct BranchShortCommit {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct BranchShort {
+        pub struct BranchShort {
             name: String,
             commit: BranchShortCommit,
             protected: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Link {
+        pub struct Link {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AutoMerge {
+        pub struct AutoMerge {
             /// Ref components/schemas/simple-user
             enabled_by: crate::components::schemas::SimpleUser,
             merge_method: String,
@@ -4977,7 +4977,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestSimpleLabels {
+        pub struct PullRequestSimpleLabels {
             id: i64,
             node_id: String,
             url: String,
@@ -4988,7 +4988,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestSimpleHead {
+        pub struct PullRequestSimpleHead {
             label: String,
             #[serde(rename="ref")]
             ref_: String,
@@ -5000,7 +5000,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestSimpleBase {
+        pub struct PullRequestSimpleBase {
             label: String,
             #[serde(rename="ref")]
             ref_: String,
@@ -5012,7 +5012,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestSimpleLinks {
+        pub struct PullRequestSimpleLinks {
             /// Ref components/schemas/link
             comments: crate::components::schemas::Link,
             /// Ref components/schemas/link
@@ -5033,7 +5033,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestSimple {
+        pub struct PullRequestSimple {
             url: String,
             id: i64,
             node_id: String,
@@ -5084,7 +5084,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SimpleCommitStatus {
+        pub struct SimpleCommitStatus {
             description: Option<String>,
             id: i64,
             node_id: String,
@@ -5100,7 +5100,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CombinedCommitStatus {
+        pub struct CombinedCommitStatus {
             state: String,
             statuses: Vec<crate::components::schemas::SimpleCommitStatus>,
             sha: String,
@@ -5112,7 +5112,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Status {
+        pub struct Status {
             url: String,
             avatar_url: Option<String>,
             id: i64,
@@ -5128,7 +5128,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableCodeOfConductSimple {
+        pub struct NullableCodeOfConductSimple {
             url: String,
             key: String,
             name: String,
@@ -5136,13 +5136,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableCommunityHealthFile {
+        pub struct NullableCommunityHealthFile {
             url: String,
             html_url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommunityProfileFiles {
+        pub struct CommunityProfileFiles {
             /// Ref components/schemas/nullable-code-of-conduct-simple
             code_of_conduct: crate::components::schemas::NullableCodeOfConductSimple,
             /// Ref components/schemas/nullable-community-health-file
@@ -5160,7 +5160,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommunityProfile {
+        pub struct CommunityProfile {
             health_percentage: i64,
             description: Option<String>,
             documentation: Option<String>,
@@ -5171,7 +5171,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitComparison {
+        pub struct CommitComparison {
             url: String,
             html_url: String,
             permalink_url: String,
@@ -5191,7 +5191,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentReferenceAttachment {
+        pub struct ContentReferenceAttachment {
             id: i64,
             title: String,
             body: String,
@@ -5200,7 +5200,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentTreeEntriesLinks {
+        pub struct ContentTreeEntriesLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -5208,7 +5208,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentTreeEntries {
+        pub struct ContentTreeEntries {
             #[serde(rename="type")]
             type_: String,
             size: i64,
@@ -5226,7 +5226,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentTreeLinks {
+        pub struct ContentTreeLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -5234,7 +5234,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentTree {
+        pub struct ContentTree {
             #[serde(rename="type")]
             type_: String,
             size: i64,
@@ -5252,7 +5252,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentDirectoryArrLinks {
+        pub struct ContentDirectoryArrLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -5260,7 +5260,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentDirectoryArr {
+        pub struct ContentDirectoryArr {
             #[serde(rename="type")]
             type_: String,
             size: i64,
@@ -5277,10 +5277,10 @@ mod components {
             links: ContentDirectoryArrLinks,
         }
 
-        type ContentDirectory = Vec<ContentDirectoryArr>;
+        pub type ContentDirectory = Vec<ContentDirectoryArr>;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentFileLinks {
+        pub struct ContentFileLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -5288,7 +5288,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentFile {
+        pub struct ContentFile {
             #[serde(rename="type")]
             type_: String,
             encoding: String,
@@ -5310,7 +5310,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentSymlinkLinks {
+        pub struct ContentSymlinkLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -5318,7 +5318,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentSymlink {
+        pub struct ContentSymlink {
             #[serde(rename="type")]
             type_: String,
             target: String,
@@ -5335,7 +5335,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentSubmoduleLinks {
+        pub struct ContentSubmoduleLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -5343,7 +5343,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentSubmodule {
+        pub struct ContentSubmodule {
             #[serde(rename="type")]
             type_: String,
             submodule_git_url: String,
@@ -5360,7 +5360,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitContentLinks {
+        pub struct FileCommitContentLinks {
             #[serde(rename="self", skip_serializing_if = "Option::is_none")]
             self_: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5370,7 +5370,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitContent {
+        pub struct FileCommitContent {
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5394,7 +5394,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitCommitAuthor {
+        pub struct FileCommitCommitAuthor {
             #[serde(skip_serializing_if = "Option::is_none")]
             date: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5404,7 +5404,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitCommitCommitter {
+        pub struct FileCommitCommitCommitter {
             #[serde(skip_serializing_if = "Option::is_none")]
             date: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5414,7 +5414,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitCommitTree {
+        pub struct FileCommitCommitTree {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5422,7 +5422,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitCommitParents {
+        pub struct FileCommitCommitParents {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5432,7 +5432,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitCommitVerification {
+        pub struct FileCommitCommitVerification {
             #[serde(skip_serializing_if = "Option::is_none")]
             verified: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5444,7 +5444,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommitCommit {
+        pub struct FileCommitCommit {
             #[serde(skip_serializing_if = "Option::is_none")]
             sha: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5468,13 +5468,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct FileCommit {
+        pub struct FileCommit {
             content: Option<FileCommitContent>,
             commit: FileCommitCommit,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Contributor {
+        pub struct Contributor {
             #[serde(skip_serializing_if = "Option::is_none")]
             login: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5519,7 +5519,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DeploymentStatus {
+        pub struct DeploymentStatus {
             url: String,
             id: i64,
             node_id: String,
@@ -5543,16 +5543,16 @@ mod components {
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
         }
 
-        type WaitTimer = i64;
+        pub type WaitTimer = i64;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DeploymentBranchPolicy {
+        pub struct DeploymentBranchPolicy {
             protected_branches: bool,
             custom_branch_policies: bool,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EnvironmentProtectionRules0 {
+        pub struct EnvironmentProtectionRules0 {
             id: i64,
             node_id: String,
             #[serde(rename="type")]
@@ -5565,13 +5565,13 @@ mod components {
         /// AnyOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum EnvironmentProtectionRules1ReviewersReviewerOneOf {
+        pub enum EnvironmentProtectionRules1ReviewersReviewerOneOf {
             SimpleUser(crate::components::schemas::SimpleUser),
             Team(crate::components::schemas::Team),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EnvironmentProtectionRules1Reviewers {
+        pub struct EnvironmentProtectionRules1Reviewers {
             /// Ref components/schemas/deployment-reviewer-type
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
             type_: Option<crate::components::schemas::DeploymentReviewerType>,
@@ -5580,7 +5580,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EnvironmentProtectionRules1 {
+        pub struct EnvironmentProtectionRules1 {
             id: i64,
             node_id: String,
             #[serde(rename="type")]
@@ -5590,7 +5590,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct EnvironmentProtectionRules2 {
+        pub struct EnvironmentProtectionRules2 {
             id: i64,
             node_id: String,
             #[serde(rename="type")]
@@ -5600,14 +5600,14 @@ mod components {
         /// AnyOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum EnvironmentProtectionRulesOneOf {
+        pub enum EnvironmentProtectionRulesOneOf {
             EnvironmentProtectionRules0(EnvironmentProtectionRules0),
             EnvironmentProtectionRules1(EnvironmentProtectionRules1),
             EnvironmentProtectionRules2(EnvironmentProtectionRules2),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Environment {
+        pub struct Environment {
             id: i64,
             node_id: String,
             name: String,
@@ -5623,13 +5623,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ShortBlob {
+        pub struct ShortBlob {
             url: String,
             sha: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Blob {
+        pub struct Blob {
             content: String,
             encoding: String,
             url: String,
@@ -5641,34 +5641,34 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitCommitAuthor {
+        pub struct GitCommitAuthor {
             date: String,
             email: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitCommitCommitter {
+        pub struct GitCommitCommitter {
             date: String,
             email: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitCommitTree {
+        pub struct GitCommitTree {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitCommitParents {
+        pub struct GitCommitParents {
             sha: String,
             url: String,
             html_url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitCommitVerification {
+        pub struct GitCommitVerification {
             verified: bool,
             reason: String,
             signature: Option<String>,
@@ -5676,7 +5676,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitCommit {
+        pub struct GitCommit {
             sha: String,
             node_id: String,
             url: String,
@@ -5690,7 +5690,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitRefObject {
+        pub struct GitRefObject {
             #[serde(rename="type")]
             type_: String,
             sha: String,
@@ -5698,7 +5698,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitRef {
+        pub struct GitRef {
             #[serde(rename="ref")]
             ref_: String,
             node_id: String,
@@ -5707,14 +5707,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitTagTagger {
+        pub struct GitTagTagger {
             date: String,
             email: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitTagObject {
+        pub struct GitTagObject {
             sha: String,
             #[serde(rename="type")]
             type_: String,
@@ -5722,7 +5722,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitTag {
+        pub struct GitTag {
             node_id: String,
             tag: String,
             sha: String,
@@ -5736,7 +5736,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitTreeTree {
+        pub struct GitTreeTree {
             #[serde(skip_serializing_if = "Option::is_none")]
             path: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5752,7 +5752,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GitTree {
+        pub struct GitTree {
             sha: String,
             url: String,
             truncated: bool,
@@ -5760,14 +5760,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookResponse {
+        pub struct HookResponse {
             code: Option<i64>,
             status: Option<String>,
             message: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HookConfig {
+        pub struct HookConfig {
             #[serde(skip_serializing_if = "Option::is_none")]
             email: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5795,7 +5795,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Hook {
+        pub struct Hook {
             #[serde(rename="type")]
             type_: String,
             id: i64,
@@ -5815,7 +5815,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ImportProjectChoices {
+        pub struct ImportProjectChoices {
             #[serde(skip_serializing_if = "Option::is_none")]
             vcs: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5825,7 +5825,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Import {
+        pub struct Import {
             vcs: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             use_lfs: Option<bool>,
@@ -5868,7 +5868,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PorterAuthor {
+        pub struct PorterAuthor {
             id: i64,
             remote_id: String,
             remote_name: String,
@@ -5879,7 +5879,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PorterLargeFile {
+        pub struct PorterLargeFile {
             ref_name: String,
             path: String,
             oid: String,
@@ -5887,7 +5887,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableIssueLabels1 {
+        pub struct NullableIssueLabels1 {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5907,13 +5907,13 @@ mod components {
         /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum NullableIssueLabelsOneOf {
+        pub enum NullableIssueLabelsOneOf {
             String(String),
             NullableIssueLabels1(NullableIssueLabels1),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableIssuePullRequest {
+        pub struct NullableIssuePullRequest {
             #[serde(skip_serializing_if = "Option::is_none")]
             merged_at: Option<String>,
             diff_url: Option<String>,
@@ -5923,7 +5923,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableIssue {
+        pub struct NullableIssue {
             id: i64,
             node_id: String,
             url: String,
@@ -5978,13 +5978,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueEventLabel {
+        pub struct IssueEventLabel {
             name: Option<String>,
             color: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueEventDismissedReview {
+        pub struct IssueEventDismissedReview {
             state: String,
             review_id: i64,
             dismissal_message: Option<String>,
@@ -5993,12 +5993,12 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueEventMilestone {
+        pub struct IssueEventMilestone {
             title: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueEventProjectCard {
+        pub struct IssueEventProjectCard {
             url: String,
             id: i64,
             project_url: String,
@@ -6009,13 +6009,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueEventRename {
+        pub struct IssueEventRename {
             from: String,
             to: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueEvent {
+        pub struct IssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6069,13 +6069,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LabeledIssueEventLabel {
+        pub struct LabeledIssueEventLabel {
             name: String,
             color: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LabeledIssueEvent {
+        pub struct LabeledIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6091,13 +6091,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct UnlabeledIssueEventLabel {
+        pub struct UnlabeledIssueEventLabel {
             name: String,
             color: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct UnlabeledIssueEvent {
+        pub struct UnlabeledIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6113,7 +6113,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AssignedIssueEvent {
+        pub struct AssignedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6132,7 +6132,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct UnassignedIssueEvent {
+        pub struct UnassignedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6151,12 +6151,12 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MilestonedIssueEventMilestone {
+        pub struct MilestonedIssueEventMilestone {
             title: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MilestonedIssueEvent {
+        pub struct MilestonedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6172,12 +6172,12 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DemilestonedIssueEventMilestone {
+        pub struct DemilestonedIssueEventMilestone {
             title: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DemilestonedIssueEvent {
+        pub struct DemilestonedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6193,13 +6193,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RenamedIssueEventRename {
+        pub struct RenamedIssueEventRename {
             from: String,
             to: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RenamedIssueEvent {
+        pub struct RenamedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6215,7 +6215,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReviewRequestedIssueEvent {
+        pub struct ReviewRequestedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6238,7 +6238,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReviewRequestRemovedIssueEvent {
+        pub struct ReviewRequestRemovedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6261,7 +6261,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReviewDismissedIssueEventDismissedReview {
+        pub struct ReviewDismissedIssueEventDismissedReview {
             state: String,
             review_id: i64,
             dismissal_message: Option<String>,
@@ -6270,7 +6270,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReviewDismissedIssueEvent {
+        pub struct ReviewDismissedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6286,7 +6286,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LockedIssueEvent {
+        pub struct LockedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6302,7 +6302,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AddedToProjectIssueEventProjectCard {
+        pub struct AddedToProjectIssueEventProjectCard {
             id: i64,
             url: String,
             project_id: i64,
@@ -6313,7 +6313,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct AddedToProjectIssueEvent {
+        pub struct AddedToProjectIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6330,7 +6330,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MovedColumnInProjectIssueEventProjectCard {
+        pub struct MovedColumnInProjectIssueEventProjectCard {
             id: i64,
             url: String,
             project_id: i64,
@@ -6341,7 +6341,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MovedColumnInProjectIssueEvent {
+        pub struct MovedColumnInProjectIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6358,7 +6358,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RemovedFromProjectIssueEventProjectCard {
+        pub struct RemovedFromProjectIssueEventProjectCard {
             id: i64,
             url: String,
             project_id: i64,
@@ -6369,7 +6369,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RemovedFromProjectIssueEvent {
+        pub struct RemovedFromProjectIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6386,7 +6386,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ConvertedNoteToIssueIssueEventProjectCard {
+        pub struct ConvertedNoteToIssueIssueEventProjectCard {
             id: i64,
             url: String,
             project_id: i64,
@@ -6397,7 +6397,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ConvertedNoteToIssueIssueEvent {
+        pub struct ConvertedNoteToIssueIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6415,7 +6415,7 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum IssueEventForIssue {
+        pub enum IssueEventForIssue {
             LabeledIssueEvent(crate::components::schemas::LabeledIssueEvent),
             UnlabeledIssueEvent(crate::components::schemas::UnlabeledIssueEvent),
             AssignedIssueEvent(crate::components::schemas::AssignedIssueEvent),
@@ -6434,7 +6434,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Label {
+        pub struct Label {
             id: i64,
             node_id: String,
             url: String,
@@ -6445,7 +6445,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommentEvent {
+        pub struct TimelineCommentEvent {
             event: String,
             /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
@@ -6475,7 +6475,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCrossReferencedEventSource {
+        pub struct TimelineCrossReferencedEventSource {
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
             type_: Option<String>,
             /// Ref components/schemas/issue
@@ -6484,7 +6484,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCrossReferencedEvent {
+        pub struct TimelineCrossReferencedEvent {
             event: String,
             /// Ref components/schemas/simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6495,34 +6495,34 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommittedEventAuthor {
+        pub struct TimelineCommittedEventAuthor {
             date: String,
             email: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommittedEventCommitter {
+        pub struct TimelineCommittedEventCommitter {
             date: String,
             email: String,
             name: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommittedEventTree {
+        pub struct TimelineCommittedEventTree {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommittedEventParents {
+        pub struct TimelineCommittedEventParents {
             sha: String,
             url: String,
             html_url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommittedEventVerification {
+        pub struct TimelineCommittedEventVerification {
             verified: bool,
             reason: String,
             signature: Option<String>,
@@ -6530,7 +6530,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommittedEvent {
+        pub struct TimelineCommittedEvent {
             #[serde(skip_serializing_if = "Option::is_none")]
             event: Option<String>,
             sha: String,
@@ -6546,23 +6546,23 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineReviewedEventLinksHtml {
+        pub struct TimelineReviewedEventLinksHtml {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineReviewedEventLinksPullRequest {
+        pub struct TimelineReviewedEventLinksPullRequest {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineReviewedEventLinks {
+        pub struct TimelineReviewedEventLinks {
             html: TimelineReviewedEventLinksHtml,
             pull_request: TimelineReviewedEventLinksPullRequest,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineReviewedEvent {
+        pub struct TimelineReviewedEvent {
             event: String,
             id: i64,
             node_id: String,
@@ -6586,22 +6586,22 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewCommentLinksSelf {
+        pub struct PullRequestReviewCommentLinksSelf {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewCommentLinksHtml {
+        pub struct PullRequestReviewCommentLinksHtml {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewCommentLinksPullRequest {
+        pub struct PullRequestReviewCommentLinksPullRequest {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewCommentLinks {
+        pub struct PullRequestReviewCommentLinks {
             #[serde(rename="self")]
             self_: PullRequestReviewCommentLinksSelf,
             html: PullRequestReviewCommentLinksHtml,
@@ -6609,7 +6609,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewComment {
+        pub struct PullRequestReviewComment {
             url: String,
             pull_request_review_id: Option<i64>,
             id: i64,
@@ -6655,7 +6655,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineLineCommentedEvent {
+        pub struct TimelineLineCommentedEvent {
             #[serde(skip_serializing_if = "Option::is_none")]
             event: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6665,7 +6665,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineCommitCommentedEvent {
+        pub struct TimelineCommitCommentedEvent {
             #[serde(skip_serializing_if = "Option::is_none")]
             event: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6677,7 +6677,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineAssignedIssueEvent {
+        pub struct TimelineAssignedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6694,7 +6694,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineUnassignedIssueEvent {
+        pub struct TimelineUnassignedIssueEvent {
             id: i64,
             node_id: String,
             url: String,
@@ -6711,10 +6711,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TimelineIssueEvents;
+        pub struct TimelineIssueEvents;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DeployKey {
+        pub struct DeployKey {
             id: i64,
             key: String,
             url: String,
@@ -6725,10 +6725,10 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Language;
+        pub struct Language;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LicenseContentLinks {
+        pub struct LicenseContentLinks {
             git: Option<String>,
             html: Option<String>,
             #[serde(rename="self")]
@@ -6736,7 +6736,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LicenseContent {
+        pub struct LicenseContent {
             name: String,
             path: String,
             sha: String,
@@ -6756,7 +6756,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MergedUpstream {
+        pub struct MergedUpstream {
             #[serde(skip_serializing_if = "Option::is_none")]
             message: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6766,7 +6766,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Milestone {
+        pub struct Milestone {
             url: String,
             html_url: String,
             labels_url: String,
@@ -6787,13 +6787,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PagesSourceHash {
+        pub struct PagesSourceHash {
             branch: String,
             path: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PagesHttpsCertificate {
+        pub struct PagesHttpsCertificate {
             state: String,
             description: String,
             domains: Vec<String>,
@@ -6802,7 +6802,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Page {
+        pub struct Page {
             url: String,
             status: Option<String>,
             cname: Option<String>,
@@ -6825,12 +6825,12 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PageBuildError {
+        pub struct PageBuildError {
             message: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PageBuild {
+        pub struct PageBuild {
             url: String,
             status: String,
             error: PageBuildError,
@@ -6843,13 +6843,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PageBuildStatus {
+        pub struct PageBuildStatus {
             url: String,
             status: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PagesHealthCheckDomain {
+        pub struct PagesHealthCheckDomain {
             #[serde(skip_serializing_if = "Option::is_none")]
             host: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6909,7 +6909,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PagesHealthCheckAltDomain {
+        pub struct PagesHealthCheckAltDomain {
             #[serde(skip_serializing_if = "Option::is_none")]
             host: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6969,7 +6969,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PagesHealthCheck {
+        pub struct PagesHealthCheck {
             #[serde(skip_serializing_if = "Option::is_none")]
             domain: Option<PagesHealthCheckDomain>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6977,7 +6977,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TeamSimple {
+        pub struct TeamSimple {
             id: i64,
             node_id: String,
             url: String,
@@ -6995,7 +6995,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestLabels {
+        pub struct PullRequestLabels {
             id: i64,
             node_id: String,
             url: String,
@@ -7006,7 +7006,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestHeadRepoOwner {
+        pub struct PullRequestHeadRepoOwner {
             avatar_url: String,
             events_url: String,
             followers_url: String,
@@ -7029,7 +7029,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestHeadRepoPermissions {
+        pub struct PullRequestHeadRepoPermissions {
             admin: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             maintain: Option<bool>,
@@ -7040,7 +7040,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestHeadRepoLicense {
+        pub struct PullRequestHeadRepoLicense {
             key: String,
             name: String,
             url: Option<String>,
@@ -7049,7 +7049,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestHeadRepo {
+        pub struct PullRequestHeadRepo {
             archive_url: String,
             assignees_url: String,
             blobs_url: String,
@@ -7146,7 +7146,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestHeadUser {
+        pub struct PullRequestHeadUser {
             avatar_url: String,
             events_url: String,
             followers_url: String,
@@ -7169,7 +7169,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestHead {
+        pub struct PullRequestHead {
             label: String,
             #[serde(rename="ref")]
             ref_: String,
@@ -7179,7 +7179,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestBaseRepoOwner {
+        pub struct PullRequestBaseRepoOwner {
             avatar_url: String,
             events_url: String,
             followers_url: String,
@@ -7202,7 +7202,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestBaseRepoPermissions {
+        pub struct PullRequestBaseRepoPermissions {
             admin: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             maintain: Option<bool>,
@@ -7213,7 +7213,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestBaseRepo {
+        pub struct PullRequestBaseRepo {
             archive_url: String,
             assignees_url: String,
             blobs_url: String,
@@ -7311,7 +7311,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestBaseUser {
+        pub struct PullRequestBaseUser {
             avatar_url: String,
             events_url: String,
             followers_url: String,
@@ -7334,7 +7334,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestBase {
+        pub struct PullRequestBase {
             label: String,
             #[serde(rename="ref")]
             ref_: String,
@@ -7344,7 +7344,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestLinks {
+        pub struct PullRequestLinks {
             /// Ref components/schemas/link
             comments: crate::components::schemas::Link,
             /// Ref components/schemas/link
@@ -7365,7 +7365,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequest {
+        pub struct PullRequest {
             url: String,
             id: i64,
             node_id: String,
@@ -7430,36 +7430,36 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestMergeResult {
+        pub struct PullRequestMergeResult {
             sha: String,
             merged: bool,
             message: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewRequest {
+        pub struct PullRequestReviewRequest {
             users: Vec<crate::components::schemas::SimpleUser>,
             teams: Vec<crate::components::schemas::Team>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewLinksHtml {
+        pub struct PullRequestReviewLinksHtml {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewLinksPullRequest {
+        pub struct PullRequestReviewLinksPullRequest {
             href: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReviewLinks {
+        pub struct PullRequestReviewLinks {
             html: PullRequestReviewLinksHtml,
             pull_request: PullRequestReviewLinksPullRequest,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PullRequestReview {
+        pub struct PullRequestReview {
             id: i64,
             node_id: String,
             /// Ref components/schemas/nullable-simple-user
@@ -7482,7 +7482,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReviewCommentLinks {
+        pub struct ReviewCommentLinks {
             /// Ref components/schemas/link
             #[serde(rename="self")]
             self_: crate::components::schemas::Link,
@@ -7493,7 +7493,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReviewComment {
+        pub struct ReviewComment {
             url: String,
             pull_request_review_id: Option<i64>,
             id: i64,
@@ -7539,7 +7539,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReleaseAsset {
+        pub struct ReleaseAsset {
             url: String,
             browser_download_url: String,
             id: i64,
@@ -7557,7 +7557,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Release {
+        pub struct Release {
             url: String,
             html_url: String,
             assets_url: String,
@@ -7592,13 +7592,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReleaseNotesContent {
+        pub struct ReleaseNotesContent {
             name: String,
             body: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SecretScanningAlert {
+        pub struct SecretScanningAlert {
             /// Ref components/schemas/alert-number
             #[serde(skip_serializing_if = "Option::is_none")]
             number: Option<crate::components::schemas::AlertNumber>,
@@ -7631,23 +7631,23 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Stargazer {
+        pub struct Stargazer {
             starred_at: String,
             /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
         }
 
-        type CodeFrequencyStat = Vec<i64>;
+        pub type CodeFrequencyStat = Vec<i64>;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitActivity {
+        pub struct CommitActivity {
             days: Vec<i64>,
             total: i64,
             week: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContributorActivityWeeks {
+        pub struct ContributorActivityWeeks {
             #[serde(skip_serializing_if = "Option::is_none")]
             w: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7659,7 +7659,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContributorActivity {
+        pub struct ContributorActivity {
             /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
             total: i64,
@@ -7667,13 +7667,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ParticipationStats {
+        pub struct ParticipationStats {
             all: Vec<i64>,
             owner: Vec<i64>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepositorySubscription {
+        pub struct RepositorySubscription {
             subscribed: bool,
             ignored: bool,
             reason: Option<String>,
@@ -7683,13 +7683,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TagCommit {
+        pub struct TagCommit {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Tag {
+        pub struct Tag {
             name: String,
             commit: TagCommit,
             zipball_url: String,
@@ -7698,26 +7698,26 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Topic {
+        pub struct Topic {
             names: Vec<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Traffic {
+        pub struct Traffic {
             timestamp: String,
             uniques: i64,
             count: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CloneTraffic {
+        pub struct CloneTraffic {
             count: i64,
             uniques: i64,
             clones: Vec<crate::components::schemas::Traffic>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ContentTraffic {
+        pub struct ContentTraffic {
             path: String,
             title: String,
             count: i64,
@@ -7725,21 +7725,21 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ReferrerTraffic {
+        pub struct ReferrerTraffic {
             referrer: String,
             count: i64,
             uniques: i64,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ViewTraffic {
+        pub struct ViewTraffic {
             count: i64,
             uniques: i64,
             views: Vec<crate::components::schemas::Traffic>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimGroupListEnterpriseResourcesMembers {
+        pub struct ScimGroupListEnterpriseResourcesMembers {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
             #[serde(rename="$ref", skip_serializing_if = "Option::is_none")]
@@ -7749,7 +7749,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimGroupListEnterpriseResourcesMeta {
+        pub struct ScimGroupListEnterpriseResourcesMeta {
             #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
             resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7761,7 +7761,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimGroupListEnterpriseResources {
+        pub struct ScimGroupListEnterpriseResources {
             schemas: Vec<String>,
             id: String,
             #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
@@ -7775,7 +7775,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimGroupListEnterprise {
+        pub struct ScimGroupListEnterprise {
             schemas: Vec<String>,
             #[serde(rename="totalResults")]
             total_results: i64,
@@ -7788,7 +7788,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseGroupMembers {
+        pub struct ScimEnterpriseGroupMembers {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
             #[serde(rename="$ref", skip_serializing_if = "Option::is_none")]
@@ -7798,7 +7798,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseGroupMeta {
+        pub struct ScimEnterpriseGroupMeta {
             #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
             resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7810,7 +7810,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseGroup {
+        pub struct ScimEnterpriseGroup {
             schemas: Vec<String>,
             id: String,
             #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
@@ -7824,7 +7824,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserListEnterpriseResourcesName {
+        pub struct ScimUserListEnterpriseResourcesName {
             #[serde(rename="givenName", skip_serializing_if = "Option::is_none")]
             given_name: Option<String>,
             #[serde(rename="familyName", skip_serializing_if = "Option::is_none")]
@@ -7832,7 +7832,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserListEnterpriseResourcesEmails {
+        pub struct ScimUserListEnterpriseResourcesEmails {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7842,13 +7842,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserListEnterpriseResourcesGroups {
+        pub struct ScimUserListEnterpriseResourcesGroups {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserListEnterpriseResourcesMeta {
+        pub struct ScimUserListEnterpriseResourcesMeta {
             #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
             resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7860,7 +7860,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserListEnterpriseResources {
+        pub struct ScimUserListEnterpriseResources {
             schemas: Vec<String>,
             id: String,
             #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
@@ -7880,7 +7880,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserListEnterprise {
+        pub struct ScimUserListEnterprise {
             schemas: Vec<String>,
             #[serde(rename="totalResults")]
             total_results: i64,
@@ -7893,7 +7893,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseUserName {
+        pub struct ScimEnterpriseUserName {
             #[serde(rename="givenName", skip_serializing_if = "Option::is_none")]
             given_name: Option<String>,
             #[serde(rename="familyName", skip_serializing_if = "Option::is_none")]
@@ -7901,7 +7901,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseUserEmails {
+        pub struct ScimEnterpriseUserEmails {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
@@ -7911,13 +7911,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseUserGroups {
+        pub struct ScimEnterpriseUserGroups {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseUserMeta {
+        pub struct ScimEnterpriseUserMeta {
             #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
             resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7929,7 +7929,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimEnterpriseUser {
+        pub struct ScimEnterpriseUser {
             schemas: Vec<String>,
             id: String,
             #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
@@ -7949,7 +7949,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserName {
+        pub struct ScimUserName {
             #[serde(rename="givenName")]
             given_name: Option<String>,
             #[serde(rename="familyName")]
@@ -7959,14 +7959,14 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserEmails {
+        pub struct ScimUserEmails {
             value: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             primary: Option<bool>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserMeta {
+        pub struct ScimUserMeta {
             #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
             resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7978,19 +7978,19 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserOperationsValue1;
+        pub struct ScimUserOperationsValue1;
 
         /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
         #[serde(untagged)]
-        enum ScimUserOperationsValueOneOf {
+        pub enum ScimUserOperationsValueOneOf {
             String(String),
             ScimUserOperationsValue1(ScimUserOperationsValue1),
             Vec(Vec<HashMap<String, String>>),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserOperations {
+        pub struct ScimUserOperations {
             op: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             path: Option<String>,
@@ -7999,7 +7999,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUser {
+        pub struct ScimUser {
             schemas: Vec<String>,
             id: String,
             #[serde(rename="externalId")]
@@ -8021,7 +8021,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserList {
+        pub struct ScimUserList {
             schemas: Vec<String>,
             #[serde(rename="totalResults")]
             total_results: i64,
@@ -8034,7 +8034,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SearchResultTextMatchesArrMatches {
+        pub struct SearchResultTextMatchesArrMatches {
             #[serde(skip_serializing_if = "Option::is_none")]
             text: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8042,7 +8042,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct SearchResultTextMatchesArr {
+        pub struct SearchResultTextMatchesArr {
             #[serde(skip_serializing_if = "Option::is_none")]
             object_url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8055,10 +8055,10 @@ mod components {
             matches: Option<Vec<SearchResultTextMatchesArrMatches>>,
         }
 
-        type SearchResultTextMatches = Vec<SearchResultTextMatchesArr>;
+        pub type SearchResultTextMatches = Vec<SearchResultTextMatchesArr>;
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodeSearchResultItem {
+        pub struct CodeSearchResultItem {
             name: String,
             path: String,
             sha: String,
@@ -8082,20 +8082,20 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitSearchResultItemCommitAuthor {
+        pub struct CommitSearchResultItemCommitAuthor {
             name: String,
             email: String,
             date: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitSearchResultItemCommitTree {
+        pub struct CommitSearchResultItemCommitTree {
             sha: String,
             url: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitSearchResultItemCommit {
+        pub struct CommitSearchResultItemCommit {
             author: CommitSearchResultItemCommitAuthor,
             /// Ref components/schemas/nullable-git-user
             committer: crate::components::schemas::NullableGitUser,
@@ -8109,7 +8109,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitSearchResultItemParents {
+        pub struct CommitSearchResultItemParents {
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8119,7 +8119,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CommitSearchResultItem {
+        pub struct CommitSearchResultItem {
             url: String,
             sha: String,
             html_url: String,
@@ -8140,7 +8140,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueSearchResultItemLabels {
+        pub struct IssueSearchResultItemLabels {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8158,7 +8158,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueSearchResultItemPullRequest {
+        pub struct IssueSearchResultItemPullRequest {
             #[serde(skip_serializing_if = "Option::is_none")]
             merged_at: Option<String>,
             diff_url: Option<String>,
@@ -8168,7 +8168,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueSearchResultItem {
+        pub struct IssueSearchResultItem {
             url: String,
             repository_url: String,
             labels_url: String,
@@ -8226,7 +8226,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct LabelSearchResultItem {
+        pub struct LabelSearchResultItem {
             id: i64,
             node_id: String,
             url: String,
@@ -8241,7 +8241,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepoSearchResultItemPermissions {
+        pub struct RepoSearchResultItemPermissions {
             admin: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             maintain: Option<bool>,
@@ -8252,7 +8252,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct RepoSearchResultItem {
+        pub struct RepoSearchResultItem {
             id: i64,
             node_id: String,
             name: String,
@@ -8359,7 +8359,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TopicSearchResultItemRelatedTopicRelation {
+        pub struct TopicSearchResultItemRelatedTopicRelation {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8371,13 +8371,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TopicSearchResultItemRelated {
+        pub struct TopicSearchResultItemRelated {
             #[serde(skip_serializing_if = "Option::is_none")]
             topic_relation: Option<TopicSearchResultItemRelatedTopicRelation>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TopicSearchResultItemAliasesTopicRelation {
+        pub struct TopicSearchResultItemAliasesTopicRelation {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8389,13 +8389,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TopicSearchResultItemAliases {
+        pub struct TopicSearchResultItemAliases {
             #[serde(skip_serializing_if = "Option::is_none")]
             topic_relation: Option<TopicSearchResultItemAliasesTopicRelation>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct TopicSearchResultItem {
+        pub struct TopicSearchResultItem {
             name: String,
             display_name: Option<String>,
             short_description: Option<String>,
@@ -8421,7 +8421,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct UserSearchResultItem {
+        pub struct UserSearchResultItem {
             login: String,
             id: i64,
             node_id: String,
@@ -8476,7 +8476,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PrivateUserPlan {
+        pub struct PrivateUserPlan {
             collaborators: i64,
             name: String,
             space: i64,
@@ -8484,7 +8484,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct PrivateUser {
+        pub struct PrivateUser {
             login: String,
             id: i64,
             node_id: String,
@@ -8536,7 +8536,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodespacesSecret {
+        pub struct CodespacesSecret {
             name: String,
             created_at: String,
             updated_at: String,
@@ -8545,13 +8545,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct CodespacesUserPublicKey {
+        pub struct CodespacesUserPublicKey {
             key_id: String,
             key: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Email {
+        pub struct Email {
             email: String,
             primary: bool,
             verified: bool,
@@ -8559,7 +8559,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GpgKeyEmails {
+        pub struct GpgKeyEmails {
             #[serde(skip_serializing_if = "Option::is_none")]
             email: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8567,7 +8567,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GpgKeySubkeys {
+        pub struct GpgKeySubkeys {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -8597,7 +8597,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct GpgKey {
+        pub struct GpgKey {
             id: i64,
             primary_key_id: Option<i64>,
             key_id: String,
@@ -8614,7 +8614,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Key {
+        pub struct Key {
             key: String,
             id: i64,
             url: String,
@@ -8625,7 +8625,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct MarketplaceAccount {
+        pub struct MarketplaceAccount {
             url: String,
             id: i64,
             #[serde(rename="type")]
@@ -8640,7 +8640,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct UserMarketplacePurchase {
+        pub struct UserMarketplacePurchase {
             billing_cycle: String,
             next_billing_date: Option<String>,
             unit_count: Option<i64>,
@@ -8654,25 +8654,25 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct StarredRepository {
+        pub struct StarredRepository {
             starred_at: String,
             /// Ref components/schemas/repository
             repo: crate::components::schemas::Repository,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct HovercardContexts {
+        pub struct HovercardContexts {
             message: String,
             octicon: String,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct Hovercard {
+        pub struct Hovercard {
             contexts: Vec<HovercardContexts>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct KeySimple {
+        pub struct KeySimple {
             id: i64,
             key: String,
         }

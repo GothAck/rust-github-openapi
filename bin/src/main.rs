@@ -11,8 +11,8 @@ use convert_case::{Case, Casing};
 use env_logger::Env;
 use log::{info, error};
 use openapiv3::OpenAPI;
-use serde_json;
-use serde_yaml;
+extern crate serde_json;
+extern crate serde_yaml;
 
 #[derive(Parser)]
 #[clap(version=crate_version!(), author=crate_authors!())]
@@ -97,7 +97,7 @@ impl Builder {
     module.scope()
   }
 
-  fn cur_module(&mut self) -> Option<&mut codegen2::Scope> {
+  fn cur_module(&mut self) -> Option<&mut codegen2::Module> {
     if self.module_path.len() == 0 {
       return None;
     }
@@ -106,7 +106,7 @@ impl Builder {
     for module_name in iter {
       module = module.get_or_new_module(module_name);
     }
-    Some(module.scope())
+    Some(module)
   }
 
   fn get_proptype_box(&mut self, parent_name: &String, prop_name: &String, val: &openapiv3::ReferenceOr<Box<openapiv3::Schema>>) -> PropType {
@@ -170,7 +170,7 @@ impl Builder {
           let last = reference_arr.pop().unwrap();
           reference_arr.insert(0, "crate".to_string());
           reference_arr.push(last.to_case(Case::Pascal));
-          
+
           res.type_ = reference_arr.join("::");
           res.doc = Some(vec![format!("Ref {}", reference)]);
         }
@@ -196,6 +196,8 @@ impl Builder {
     for variant in variants {
       enm.push_variant(variant);
     }
+
+    enm.vis("pub");
 
     enm
   }
@@ -260,6 +262,8 @@ impl Builder {
       str.push_field(field);
     }
 
+    str.vis("pub");
+
     str
   }
 
@@ -267,30 +271,30 @@ impl Builder {
     let name = name.to_case(Case::Pascal);
     match val {
       openapiv3::Type::String(_) => {
-        self.cur_scope_or_module().raw(&format!("type {} = String;", name));
+        self.cur_scope_or_module().raw(&format!("pub type {} = String;", name));
       },
       openapiv3::Type::Number(_) => {
-        self.cur_scope_or_module().raw(&format!("type {} = i64;", name));
+        self.cur_scope_or_module().raw(&format!("pub type {} = i64;", name));
       },
       openapiv3::Type::Integer(_) => {
-        self.cur_scope_or_module().raw(&format!("type {} = i64;", name));
+        self.cur_scope_or_module().raw(&format!("pub type {} = i64;", name));
       },
       openapiv3::Type::Object(object) => {
         error!("UNHANDLED: new_typedef {} {:?}", name, object);
       },
       openapiv3::Type::Array(array) => {
         let subtype = Box::from(self.get_proptype_box(&name, &"Arr".to_string(), &array.items));
-        self.cur_scope_or_module().raw(&format!("type {} = Vec<{}>;", name, subtype.to_prop_type()));
+        self.cur_scope_or_module().raw(&format!("pub type {} = Vec<{}>;", name, subtype.to_prop_type()));
       },
       openapiv3::Type::Boolean {} => {
-        self.cur_scope_or_module().raw(&format!("type {} = bool;", name));
+        self.cur_scope_or_module().raw(&format!("pub type {} = bool;", name));
       },
     }
   }
 
   fn new_anytypedef(&mut self, name: &String) {
     let name = name.to_case(Case::Pascal);
-    self.cur_scope_or_module().raw(&format!("type {} = HashMap<String, String>;", name));
+    self.cur_scope_or_module().raw(&format!("pub type {} = HashMap<String, String>;", name));
   }
 }
 
@@ -315,8 +319,12 @@ fn main() -> anyhow::Result<()> {
     let mut builder = Builder::new();
     builder.scope.raw("#![allow(non_camel_case_types, dead_code)]");
     builder.module_path.push("components".to_string());
+    if let Some(module) = builder.cur_module() {
+      module.vis("pub");
+    }
     builder.module_path.push("schemas".to_string());
     if let Some(module) = builder.cur_module() {
+      module.vis("pub");
       module.import("serde", "{Serialize, Deserialize}");
       module.import("std::collections", "HashMap");
     }
@@ -360,7 +368,7 @@ fn main() -> anyhow::Result<()> {
       println!("{}", builder.scope.to_string());
     } else {
       File::create(flags.out_file)?
-        .write_all(builder.scope.to_string().as_bytes())?;
+        .write_all(format!("{}\n", builder.scope.to_string()).as_bytes())?;
     }
   }
 
