@@ -1,6 +1,9 @@
+#![allow(non_camel_case_types, dead_code)]
+
 mod components {
     mod schemas {
         use serde::{Serialize, Deserialize};
+        use std::collections::HashMap;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct NullableSimpleUser {
@@ -51,6 +54,7 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             slug: Option<String>,
             node_id: String,
+            /// Ref components/schemas/nullable-simple-user
             owner: crate::components::schemas::NullableSimpleUser,
             name: String,
             description: Option<String>,
@@ -92,14 +96,31 @@ mod components {
             errors: Option<Vec<String>>,
         }
 
+        type WebhookConfigUrl = String;
+
+        type WebhookConfigContentType = String;
+
+        type WebhookConfigSecret = String;
+
+        #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
+        enum WebhookConfigInsecureSsl {
+            String(String),
+            i64(i64),
+        }
+
         #[derive(Debug, Serialize, Deserialize)]
         struct WebhookConfig {
+            /// Ref components/schemas/webhook-config-url
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<crate::components::schemas::WebhookConfigUrl>,
+            /// Ref components/schemas/webhook-config-content-type
             #[serde(skip_serializing_if = "Option::is_none")]
             content_type: Option<crate::components::schemas::WebhookConfigContentType>,
+            /// Ref components/schemas/webhook-config-secret
             #[serde(skip_serializing_if = "Option::is_none")]
             secret: Option<crate::components::schemas::WebhookConfigSecret>,
+            /// Ref components/schemas/webhook-config-insecure-ssl
             #[serde(skip_serializing_if = "Option::is_none")]
             insecure_ssl: Option<crate::components::schemas::WebhookConfigInsecureSsl>,
         }
@@ -129,13 +150,15 @@ mod components {
             detail: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             status: Option<i64>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            scimType: Option<String>,
+            #[serde(rename="scimType", skip_serializing_if = "Option::is_none")]
+            scim_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             schemas: Option<Vec<String>>,
         }
 
+        /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
         enum ValidationErrorErrorsValueOneOf {
             String(String),
             i64(i64),
@@ -316,10 +339,18 @@ mod components {
             team_discussions: Option<String>,
         }
 
+        /// AnyOf
+        #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
+        enum InstallationAccountOneOf {
+            SimpleUser(crate::components::schemas::SimpleUser),
+            Enterprise(crate::components::schemas::Enterprise),
+        }
+
         #[derive(Debug, Serialize, Deserialize)]
         struct Installation {
             id: i64,
-            account: Option<>,
+            account: Option<InstallationAccountOneOf>,
             repository_selection: String,
             access_tokens_url: String,
             repositories_url: String,
@@ -327,6 +358,7 @@ mod components {
             app_id: i64,
             target_id: i64,
             target_type: String,
+            /// Ref components/schemas/app-permissions
             permissions: crate::components::schemas::AppPermissions,
             events: Vec<String>,
             created_at: String,
@@ -337,6 +369,7 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             single_file_paths: Option<Vec<String>>,
             app_slug: String,
+            /// Ref components/schemas/nullable-simple-user
             suspended_by: crate::components::schemas::NullableSimpleUser,
             suspended_at: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -591,12 +624,15 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             organization: Option<crate::components::schemas::NullableSimpleUser>,
             forks: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             permissions: Option<RepositoryPermissions>,
+            /// Ref components/schemas/simple-user
             owner: crate::components::schemas::SimpleUser,
             private: bool,
             html_url: String,
@@ -700,6 +736,7 @@ mod components {
         struct InstallationToken {
             token: String,
             expires_at: String,
+            /// Ref components/schemas/app-permissions
             #[serde(skip_serializing_if = "Option::is_none")]
             permissions: Option<crate::components::schemas::AppPermissions>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -729,12 +766,14 @@ mod components {
             created_at: String,
             updated_at: String,
             scopes: Vec<String>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             user: Option<crate::components::schemas::NullableSimpleUser>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct NullableScopedInstallation {
+            /// Ref components/schemas/app-permissions
             permissions: crate::components::schemas::AppPermissions,
             repository_selection: String,
             single_file_name: Option<String>,
@@ -743,6 +782,7 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             single_file_paths: Option<Vec<String>>,
             repositories_url: String,
+            /// Ref components/schemas/simple-user
             account: crate::components::schemas::SimpleUser,
         }
 
@@ -767,8 +807,10 @@ mod components {
             updated_at: String,
             created_at: String,
             fingerprint: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             user: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/nullable-scoped-installation
             #[serde(skip_serializing_if = "Option::is_none")]
             installation: Option<crate::components::schemas::NullableScopedInstallation>,
             expires_at: Option<String>,
@@ -784,13 +826,22 @@ mod components {
             html_url: Option<String>,
         }
 
+        type EnabledOrganizations = String;
+
+        type AllowedActions = String;
+
+        type SelectedActionsUrl = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct ActionsEnterprisePermissions {
+            /// Ref components/schemas/enabled-organizations
             enabled_organizations: crate::components::schemas::EnabledOrganizations,
             #[serde(skip_serializing_if = "Option::is_none")]
             selected_organizations_url: Option<String>,
+            /// Ref components/schemas/allowed-actions
             #[serde(skip_serializing_if = "Option::is_none")]
             allowed_actions: Option<crate::components::schemas::AllowedActions>,
+            /// Ref components/schemas/selected-actions-url
             #[serde(skip_serializing_if = "Option::is_none")]
             selected_actions_url: Option<crate::components::schemas::SelectedActionsUrl>,
         }
@@ -861,8 +912,8 @@ mod components {
             filename: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             temp_download_token: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            sha256_checksum: Option<String>,
+            #[serde(rename="sha256_checksum", skip_serializing_if = "Option::is_none")]
+            sha_256_checksum: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -937,8 +988,8 @@ mod components {
             created_at: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             deploy_key_fingerprint: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            _document_id: Option<String>,
+            #[serde(rename="_document_id", skip_serializing_if = "Option::is_none")]
+            document_id: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             emoji: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -989,12 +1040,12 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ActionsBillingUsageMinutesUsedBreakdown {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            UBUNTU: Option<i64>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            MACOS: Option<i64>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            WINDOWS: Option<i64>,
+            #[serde(rename="UBUNTU", skip_serializing_if = "Option::is_none")]
+            ubuntu: Option<i64>,
+            #[serde(rename="MACOS", skip_serializing_if = "Option::is_none")]
+            macos: Option<i64>,
+            #[serde(rename="WINDOWS", skip_serializing_if = "Option::is_none")]
+            windows: Option<i64>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -1041,6 +1092,7 @@ mod components {
             state: String,
             title: String,
             description: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
             open_issues: i64,
             closed_issues: i64,
@@ -1070,6 +1122,7 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             slug: Option<String>,
             node_id: String,
+            /// Ref components/schemas/nullable-simple-user
             owner: crate::components::schemas::NullableSimpleUser,
             name: String,
             description: Option<String>,
@@ -1091,6 +1144,8 @@ mod components {
             pem: Option<String>,
         }
 
+        type AuthorAssociation = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct ReactionRollup {
             url: String,
@@ -1108,7 +1163,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct IssueLabels {
+        struct IssueLabels1 {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1125,10 +1180,12 @@ mod components {
             default: Option<bool>,
         }
 
+        /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
         enum IssueLabelsOneOf {
             String(String),
-            IssueLabels(IssueLabels),
+            IssueLabels1(IssueLabels1),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -1156,11 +1213,14 @@ mod components {
             title: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             body: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             labels: Vec<IssueLabelsOneOf>,
+            /// Ref components/schemas/nullable-simple-user
             assignee: crate::components::schemas::NullableSimpleUser,
             #[serde(skip_serializing_if = "Option::is_none")]
             assignees: Option<Vec<crate::components::schemas::SimpleUser>>,
+            /// Ref components/schemas/nullable-milestone
             milestone: crate::components::schemas::NullableMilestone,
             locked: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1171,6 +1231,7 @@ mod components {
             closed_at: Option<String>,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             closed_by: Option<crate::components::schemas::NullableSimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1179,11 +1240,15 @@ mod components {
             body_text: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             timeline_url: Option<String>,
+            /// Ref components/schemas/repository
             #[serde(skip_serializing_if = "Option::is_none")]
             repository: Option<crate::components::schemas::Repository>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -1200,13 +1265,17 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             body_html: Option<String>,
             html_url: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             created_at: String,
             updated_at: String,
             issue_url: String,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -1238,8 +1307,10 @@ mod components {
         struct EventPayload {
             #[serde(skip_serializing_if = "Option::is_none")]
             action: Option<String>,
+            /// Ref components/schemas/issue
             #[serde(skip_serializing_if = "Option::is_none")]
             issue: Option<crate::components::schemas::Issue>,
+            /// Ref components/schemas/issue-comment
             #[serde(skip_serializing_if = "Option::is_none")]
             comment: Option<crate::components::schemas::IssueComment>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1251,8 +1322,10 @@ mod components {
             id: String,
             #[serde(rename="type")]
             type_: Option<String>,
+            /// Ref components/schemas/actor
             actor: crate::components::schemas::Actor,
             repo: EventRepo,
+            /// Ref components/schemas/actor
             #[serde(skip_serializing_if = "Option::is_none")]
             org: Option<crate::components::schemas::Actor>,
             payload: EventPayload,
@@ -1269,16 +1342,23 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct FeedLinks {
+            /// Ref components/schemas/link-with-type
             timeline: crate::components::schemas::LinkWithType,
+            /// Ref components/schemas/link-with-type
             user: crate::components::schemas::LinkWithType,
+            /// Ref components/schemas/link-with-type
             #[serde(skip_serializing_if = "Option::is_none")]
             security_advisories: Option<crate::components::schemas::LinkWithType>,
+            /// Ref components/schemas/link-with-type
             #[serde(skip_serializing_if = "Option::is_none")]
             current_user: Option<crate::components::schemas::LinkWithType>,
+            /// Ref components/schemas/link-with-type
             #[serde(skip_serializing_if = "Option::is_none")]
             current_user_public: Option<crate::components::schemas::LinkWithType>,
+            /// Ref components/schemas/link-with-type
             #[serde(skip_serializing_if = "Option::is_none")]
             current_user_actor: Option<crate::components::schemas::LinkWithType>,
+            /// Ref components/schemas/link-with-type
             #[serde(skip_serializing_if = "Option::is_none")]
             current_user_organization: Option<crate::components::schemas::LinkWithType>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1301,7 +1381,8 @@ mod components {
             current_user_organization_urls: Option<Vec<String>>,
             #[serde(skip_serializing_if = "Option::is_none")]
             security_advisories_url: Option<String>,
-            _links: FeedLinks,
+            #[serde(rename="_links")]
+            links: FeedLinks,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -1323,16 +1404,18 @@ mod components {
             updated_at: String,
             description: Option<String>,
             comments: i64,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             comments_url: String,
+            /// Ref components/schemas/simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             owner: Option<crate::components::schemas::SimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
             truncated: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            forks: Option<Vec<>>,
+            forks: Option<Vec<HashMap<String, String>>>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            history: Option<Vec<>>,
+            history: Option<Vec<HashMap<String, String>>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -1407,6 +1490,7 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct GistHistory {
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             user: Option<crate::components::schemas::NullableSimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1425,6 +1509,7 @@ mod components {
             id: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<String>,
+            /// Ref components/schemas/public-user
             #[serde(skip_serializing_if = "Option::is_none")]
             user: Option<crate::components::schemas::PublicUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1452,16 +1537,18 @@ mod components {
             updated_at: String,
             description: Option<String>,
             comments: i64,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             comments_url: String,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             owner: Option<crate::components::schemas::NullableSimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
             truncated: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            forks: Option<Vec<>>,
+            forks: Option<Vec<HashMap<String, String>>>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            history: Option<Vec<>>,
+            history: Option<Vec<HashMap<String, String>>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -1507,6 +1594,7 @@ mod components {
             user: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             comments_url: Option<String>,
+            /// Ref components/schemas/simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             owner: Option<crate::components::schemas::SimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -1519,9 +1607,11 @@ mod components {
             node_id: String,
             url: String,
             body: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
         }
 
@@ -1539,6 +1629,7 @@ mod components {
         struct GistCommit {
             url: String,
             version: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             change_status: GistCommitChangeStatus,
             committed_at: String,
@@ -1605,6 +1696,7 @@ mod components {
             unit_count: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
+            /// Ref components/schemas/marketplace-listing-plan
             #[serde(skip_serializing_if = "Option::is_none")]
             plan: Option<crate::components::schemas::MarketplaceListingPlan>,
         }
@@ -1625,6 +1717,7 @@ mod components {
             free_trial_ends_on: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             updated_at: Option<String>,
+            /// Ref components/schemas/marketplace-listing-plan
             #[serde(skip_serializing_if = "Option::is_none")]
             plan: Option<crate::components::schemas::MarketplaceListingPlan>,
         }
@@ -1647,14 +1740,14 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ApiOverviewSshKeyFingerprints {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            SHA256_RSA: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            SHA256_DSA: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            SHA256_ECDSA: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            SHA256_ED25519: Option<String>,
+            #[serde(rename="SHA256_RSA", skip_serializing_if = "Option::is_none")]
+            sha_256_rsa: Option<String>,
+            #[serde(rename="SHA256_DSA", skip_serializing_if = "Option::is_none")]
+            sha_256_dsa: Option<String>,
+            #[serde(rename="SHA256_ECDSA", skip_serializing_if = "Option::is_none")]
+            sha_256_ecdsa: Option<String>,
+            #[serde(rename="SHA256_ED25519", skip_serializing_if = "Option::is_none")]
+            sha_256_ed_25519: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -1919,12 +2012,15 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             organization: Option<crate::components::schemas::NullableSimpleUser>,
             forks: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             permissions: Option<NullableRepositoryPermissions>,
+            /// Ref components/schemas/simple-user
             owner: crate::components::schemas::SimpleUser,
             private: bool,
             html_url: String,
@@ -2058,6 +2154,7 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/simple-user
             owner: crate::components::schemas::SimpleUser,
             private: bool,
             html_url: String,
@@ -2156,6 +2253,7 @@ mod components {
             permissions: Option<MinimalRepositoryPermissions>,
             #[serde(skip_serializing_if = "Option::is_none")]
             role_name: Option<String>,
+            /// Ref components/schemas/nullable-repository
             #[serde(skip_serializing_if = "Option::is_none")]
             template_repository: Option<crate::components::schemas::NullableRepository>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2166,6 +2264,7 @@ mod components {
             subscribers_count: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             network_count: Option<i64>,
+            /// Ref components/schemas/code-of-conduct
             #[serde(skip_serializing_if = "Option::is_none")]
             code_of_conduct: Option<crate::components::schemas::CodeOfConduct>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2192,6 +2291,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct Thread {
             id: String,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
             subject: ThreadSubject,
             reason: String,
@@ -2307,13 +2407,18 @@ mod components {
             updated_at: String,
         }
 
+        type EnabledRepositories = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct ActionsOrganizationPermissions {
+            /// Ref components/schemas/enabled-repositories
             enabled_repositories: crate::components::schemas::EnabledRepositories,
             #[serde(skip_serializing_if = "Option::is_none")]
             selected_repositories_url: Option<String>,
+            /// Ref components/schemas/allowed-actions
             #[serde(skip_serializing_if = "Option::is_none")]
             allowed_actions: Option<crate::components::schemas::AllowedActions>,
+            /// Ref components/schemas/selected-actions-url
             #[serde(skip_serializing_if = "Option::is_none")]
             selected_actions_url: Option<crate::components::schemas::SelectedActionsUrl>,
         }
@@ -2430,6 +2535,7 @@ mod components {
             failed_at: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             failed_reason: Option<String>,
+            /// Ref components/schemas/simple-user
             inviter: crate::components::schemas::SimpleUser,
             team_count: i64,
             node_id: String,
@@ -2465,16 +2571,23 @@ mod components {
             type_: String,
         }
 
+        type InteractionGroup = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct InteractionLimitResponse {
+            /// Ref components/schemas/interaction-group
             limit: crate::components::schemas::InteractionGroup,
             origin: String,
             expires_at: String,
         }
 
+        type InteractionExpiry = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct InteractionLimit {
+            /// Ref components/schemas/interaction-group
             limit: crate::components::schemas::InteractionGroup,
+            /// Ref components/schemas/interaction-expiry
             #[serde(skip_serializing_if = "Option::is_none")]
             expiry: Option<crate::components::schemas::InteractionExpiry>,
         }
@@ -2522,6 +2635,7 @@ mod components {
             html_url: String,
             members_url: String,
             repositories_url: String,
+            /// Ref components/schemas/nullable-team-simple
             parent: crate::components::schemas::NullableTeamSimple,
         }
 
@@ -2536,7 +2650,9 @@ mod components {
             state: String,
             role: String,
             organization_url: String,
+            /// Ref components/schemas/organization-simple
             organization: crate::components::schemas::OrganizationSimple,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             #[serde(skip_serializing_if = "Option::is_none")]
             permissions: Option<OrgMembershipPermissions>,
@@ -2545,6 +2661,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct Migration {
             id: i64,
+            /// Ref components/schemas/nullable-simple-user
             owner: crate::components::schemas::NullableSimpleUser,
             guid: String,
             state: String,
@@ -2562,7 +2679,7 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             archive_url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            exclude: Option<Vec<>>,
+            exclude: Option<Vec<HashMap<String, String>>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -2599,6 +2716,7 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/simple-user
             owner: crate::components::schemas::SimpleUser,
             private: bool,
             html_url: String,
@@ -2697,6 +2815,7 @@ mod components {
             permissions: Option<NullableMinimalRepositoryPermissions>,
             #[serde(skip_serializing_if = "Option::is_none")]
             role_name: Option<String>,
+            /// Ref components/schemas/nullable-repository
             #[serde(skip_serializing_if = "Option::is_none")]
             template_repository: Option<crate::components::schemas::NullableRepository>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2707,6 +2826,7 @@ mod components {
             subscribers_count: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             network_count: Option<i64>,
+            /// Ref components/schemas/code-of-conduct
             #[serde(skip_serializing_if = "Option::is_none")]
             code_of_conduct: Option<crate::components::schemas::CodeOfConduct>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -2730,8 +2850,10 @@ mod components {
             html_url: String,
             version_count: i64,
             visibility: String,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             owner: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/nullable-minimal-repository
             #[serde(skip_serializing_if = "Option::is_none")]
             repository: Option<crate::components::schemas::NullableMinimalRepository>,
             created_at: String,
@@ -2790,6 +2912,7 @@ mod components {
             body: Option<String>,
             number: i64,
             state: String,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
             created_at: String,
             updated_at: String,
@@ -2799,30 +2922,50 @@ mod components {
             private: Option<bool>,
         }
 
+        type AlertNumber = i64;
+
+        type AlertCreatedAt = String;
+
+        type AlertUrl = String;
+
+        type AlertHtmlUrl = String;
+
+        type SecretScanningAlertState = String;
+
+        type SecretScanningAlertResolution = HashMap<String, String>;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct OrganizationSecretScanningAlert {
+            /// Ref components/schemas/alert-number
             #[serde(skip_serializing_if = "Option::is_none")]
             number: Option<crate::components::schemas::AlertNumber>,
+            /// Ref components/schemas/alert-created-at
             #[serde(skip_serializing_if = "Option::is_none")]
             created_at: Option<crate::components::schemas::AlertCreatedAt>,
+            /// Ref components/schemas/alert-url
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<crate::components::schemas::AlertUrl>,
+            /// Ref components/schemas/alert-html-url
             #[serde(skip_serializing_if = "Option::is_none")]
             html_url: Option<crate::components::schemas::AlertHtmlUrl>,
             #[serde(skip_serializing_if = "Option::is_none")]
             locations_url: Option<String>,
+            /// Ref components/schemas/secret-scanning-alert-state
             #[serde(skip_serializing_if = "Option::is_none")]
             state: Option<crate::components::schemas::SecretScanningAlertState>,
+            /// Ref components/schemas/secret-scanning-alert-resolution
             #[serde(skip_serializing_if = "Option::is_none")]
             resolution: Option<crate::components::schemas::SecretScanningAlertResolution>,
             #[serde(skip_serializing_if = "Option::is_none")]
             resolved_at: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             resolved_by: Option<crate::components::schemas::NullableSimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
             secret_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             secret: Option<String>,
+            /// Ref components/schemas/minimal-repository
             #[serde(skip_serializing_if = "Option::is_none")]
             repository: Option<crate::components::schemas::MinimalRepository>,
         }
@@ -2858,12 +3001,14 @@ mod components {
             permission: String,
             members_url: String,
             repositories_url: String,
+            /// Ref components/schemas/nullable-team-simple
             #[serde(skip_serializing_if = "Option::is_none")]
             parent: Option<crate::components::schemas::NullableTeamSimple>,
             members_count: i64,
             repos_count: i64,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/organization-full
             organization: crate::components::schemas::OrganizationFull,
             #[serde(skip_serializing_if = "Option::is_none")]
             ldap_dn: Option<String>,
@@ -2871,6 +3016,7 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct TeamDiscussion {
+            /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
             body: String,
             body_html: String,
@@ -2888,12 +3034,14 @@ mod components {
             title: String,
             updated_at: String,
             url: String,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct TeamDiscussionComment {
+            /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
             body: String,
             body_html: String,
@@ -2906,6 +3054,7 @@ mod components {
             number: i64,
             updated_at: String,
             url: String,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -2914,6 +3063,7 @@ mod components {
         struct Reaction {
             id: i64,
             node_id: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             content: String,
             created_at: String,
@@ -2945,6 +3095,7 @@ mod components {
             body: Option<String>,
             number: i64,
             state: String,
+            /// Ref components/schemas/simple-user
             creator: crate::components::schemas::SimpleUser,
             created_at: String,
             updated_at: String,
@@ -2972,12 +3123,14 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
             forks: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             permissions: Option<TeamRepositoryPermissions>,
             #[serde(skip_serializing_if = "Option::is_none")]
             role_name: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             owner: crate::components::schemas::NullableSimpleUser,
             private: bool,
             html_url: String,
@@ -3051,6 +3204,7 @@ mod components {
             updated_at: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             allow_rebase_merge: Option<bool>,
+            /// Ref components/schemas/nullable-repository
             #[serde(skip_serializing_if = "Option::is_none")]
             template_repository: Option<crate::components::schemas::NullableRepository>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3081,6 +3235,7 @@ mod components {
             id: i64,
             node_id: String,
             note: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
             created_at: String,
             updated_at: String,
@@ -3111,6 +3266,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct ProjectCollaboratorPermission {
             permission: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
         }
 
@@ -3124,16 +3280,23 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct RateLimitOverviewResources {
+            /// Ref components/schemas/rate-limit
             core: crate::components::schemas::RateLimit,
+            /// Ref components/schemas/rate-limit
             #[serde(skip_serializing_if = "Option::is_none")]
             graphql: Option<crate::components::schemas::RateLimit>,
+            /// Ref components/schemas/rate-limit
             search: crate::components::schemas::RateLimit,
+            /// Ref components/schemas/rate-limit
             #[serde(skip_serializing_if = "Option::is_none")]
             source_import: Option<crate::components::schemas::RateLimit>,
+            /// Ref components/schemas/rate-limit
             #[serde(skip_serializing_if = "Option::is_none")]
             integration_manifest: Option<crate::components::schemas::RateLimit>,
+            /// Ref components/schemas/rate-limit
             #[serde(skip_serializing_if = "Option::is_none")]
             code_scanning_upload: Option<crate::components::schemas::RateLimit>,
+            /// Ref components/schemas/rate-limit
             #[serde(skip_serializing_if = "Option::is_none")]
             actions_runner_registration: Option<crate::components::schemas::RateLimit>,
         }
@@ -3141,6 +3304,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct RateLimitOverview {
             resources: RateLimitOverviewResources,
+            /// Ref components/schemas/rate-limit
             rate: crate::components::schemas::RateLimit,
         }
 
@@ -3189,6 +3353,7 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/simple-user
             owner: crate::components::schemas::SimpleUser,
             private: bool,
             html_url: String,
@@ -3264,6 +3429,7 @@ mod components {
             permissions: Option<FullRepositoryPermissions>,
             #[serde(skip_serializing_if = "Option::is_none")]
             allow_rebase_merge: Option<bool>,
+            /// Ref components/schemas/nullable-repository
             #[serde(skip_serializing_if = "Option::is_none")]
             template_repository: Option<crate::components::schemas::NullableRepository>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3280,11 +3446,15 @@ mod components {
             allow_forking: Option<bool>,
             subscribers_count: i64,
             network_count: i64,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             organization: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/repository
             #[serde(skip_serializing_if = "Option::is_none")]
             parent: Option<crate::components::schemas::Repository>,
+            /// Ref components/schemas/repository
             #[serde(skip_serializing_if = "Option::is_none")]
             source: Option<crate::components::schemas::Repository>,
             forks: i64,
@@ -3294,6 +3464,7 @@ mod components {
             watchers: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
             anonymous_access_enabled: Option<bool>,
+            /// Ref components/schemas/code-of-conduct-simple
             #[serde(skip_serializing_if = "Option::is_none")]
             code_of_conduct: Option<crate::components::schemas::CodeOfConductSimple>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3352,11 +3523,16 @@ mod components {
             runner_group_name: Option<String>,
         }
 
+        type ActionsEnabled = bool;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct ActionsRepositoryPermissions {
+            /// Ref components/schemas/actions-enabled
             enabled: crate::components::schemas::ActionsEnabled,
+            /// Ref components/schemas/allowed-actions
             #[serde(skip_serializing_if = "Option::is_none")]
             allowed_actions: Option<crate::components::schemas::AllowedActions>,
+            /// Ref components/schemas/selected-actions-url
             #[serde(skip_serializing_if = "Option::is_none")]
             selected_actions_url: Option<crate::components::schemas::SelectedActionsUrl>,
         }
@@ -3457,8 +3633,11 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             previous_attempt_url: Option<String>,
             workflow_url: String,
+            /// Ref components/schemas/nullable-simple-commit
             head_commit: crate::components::schemas::NullableSimpleCommit,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
+            /// Ref components/schemas/minimal-repository
             head_repository: crate::components::schemas::MinimalRepository,
             #[serde(skip_serializing_if = "Option::is_none")]
             head_repository_id: Option<i64>,
@@ -3486,9 +3665,12 @@ mod components {
         struct EnvironmentApprovals {
             environments: Vec<EnvironmentApprovalsEnvironments>,
             state: String,
+            /// Ref components/schemas/simple-user
             user: crate::components::schemas::SimpleUser,
             comment: String,
         }
+
+        type DeploymentReviewerType = String;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct PendingDeploymentEnvironment {
@@ -3504,12 +3686,21 @@ mod components {
             html_url: Option<String>,
         }
 
+        /// AnyOf
+        #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
+        enum PendingDeploymentReviewersReviewerOneOf {
+            SimpleUser(crate::components::schemas::SimpleUser),
+            Team(crate::components::schemas::Team),
+        }
+
         #[derive(Debug, Serialize, Deserialize)]
         struct PendingDeploymentReviewers {
+            /// Ref components/schemas/deployment-reviewer-type
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
             type_: Option<crate::components::schemas::DeploymentReviewerType>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            reviewer: Option<>,
+            reviewer: Option<PendingDeploymentReviewersReviewerOneOf>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -3522,11 +3713,13 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct DeploymentPayload;
+        struct DeploymentPayload0;
 
+        /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
         enum DeploymentPayloadOneOf {
-            DeploymentPayload(DeploymentPayload),
+            DeploymentPayload0(DeploymentPayload0),
             String(String),
         }
 
@@ -3544,6 +3737,7 @@ mod components {
             original_environment: Option<String>,
             environment: String,
             description: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
             created_at: String,
             updated_at: String,
@@ -3553,6 +3747,7 @@ mod components {
             transient_environment: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
             production_environment: Option<bool>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
         }
@@ -3601,12 +3796,12 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct WorkflowRunUsageBillable {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            UBUNTU: Option<WorkflowRunUsageBillableUbuntu>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            MACOS: Option<WorkflowRunUsageBillableMacos>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            WINDOWS: Option<WorkflowRunUsageBillableWindows>,
+            #[serde(rename="UBUNTU", skip_serializing_if = "Option::is_none")]
+            ubuntu: Option<WorkflowRunUsageBillableUbuntu>,
+            #[serde(rename="MACOS", skip_serializing_if = "Option::is_none")]
+            macos: Option<WorkflowRunUsageBillableMacos>,
+            #[serde(rename="WINDOWS", skip_serializing_if = "Option::is_none")]
+            windows: Option<WorkflowRunUsageBillableWindows>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -3659,12 +3854,12 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct WorkflowUsageBillable {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            UBUNTU: Option<WorkflowUsageBillableUbuntu>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            MACOS: Option<WorkflowUsageBillableMacos>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            WINDOWS: Option<WorkflowUsageBillableWindows>,
+            #[serde(rename="UBUNTU", skip_serializing_if = "Option::is_none")]
+            ubuntu: Option<WorkflowUsageBillableUbuntu>,
+            #[serde(rename="MACOS", skip_serializing_if = "Option::is_none")]
+            macos: Option<WorkflowUsageBillableMacos>,
+            #[serde(rename="WINDOWS", skip_serializing_if = "Option::is_none")]
+            windows: Option<WorkflowUsageBillableWindows>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -3931,10 +4126,13 @@ mod components {
             enabled: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
             required_status_checks: Option<BranchProtectionRequiredStatusChecks>,
+            /// Ref components/schemas/protected-branch-admin-enforced
             #[serde(skip_serializing_if = "Option::is_none")]
             enforce_admins: Option<crate::components::schemas::ProtectedBranchAdminEnforced>,
+            /// Ref components/schemas/protected-branch-pull-request-review
             #[serde(skip_serializing_if = "Option::is_none")]
             required_pull_request_reviews: Option<crate::components::schemas::ProtectedBranchPullRequestReview>,
+            /// Ref components/schemas/branch-restriction-policy
             #[serde(skip_serializing_if = "Option::is_none")]
             restrictions: Option<crate::components::schemas::BranchRestrictionPolicy>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -3964,6 +4162,7 @@ mod components {
             name: String,
             commit: ShortBranchCommit,
             protected: bool,
+            /// Ref components/schemas/branch-protection
             #[serde(skip_serializing_if = "Option::is_none")]
             protection: Option<crate::components::schemas::BranchProtection>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4014,11 +4213,14 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct CommitCommit {
             url: String,
+            /// Ref components/schemas/nullable-git-user
             author: crate::components::schemas::NullableGitUser,
+            /// Ref components/schemas/nullable-git-user
             committer: crate::components::schemas::NullableGitUser,
             message: String,
             comment_count: i64,
             tree: CommitCommitTree,
+            /// Ref components/schemas/verification
             #[serde(skip_serializing_if = "Option::is_none")]
             verification: Option<crate::components::schemas::Verification>,
         }
@@ -4049,7 +4251,9 @@ mod components {
             html_url: String,
             comments_url: String,
             commit: CommitCommit,
+            /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
+            /// Ref components/schemas/nullable-simple-user
             committer: crate::components::schemas::NullableSimpleUser,
             parents: Vec<CommitParents>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4068,9 +4272,12 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct BranchWithProtection {
             name: String,
+            /// Ref components/schemas/commit
             commit: crate::components::schemas::Commit,
-            _links: BranchWithProtectionLinks,
+            #[serde(rename="_links")]
+            links: BranchWithProtectionLinks,
             protected: bool,
+            /// Ref components/schemas/branch-protection
             protection: crate::components::schemas::BranchProtection,
             protection_url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4145,6 +4352,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct ProtectedBranch {
             url: String,
+            /// Ref components/schemas/status-check-policy
             #[serde(skip_serializing_if = "Option::is_none")]
             required_status_checks: Option<crate::components::schemas::StatusCheckPolicy>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4159,6 +4367,7 @@ mod components {
             allow_force_pushes: Option<ProtectedBranchAllowForcePushes>,
             #[serde(skip_serializing_if = "Option::is_none")]
             allow_deletions: Option<ProtectedBranchAllowDeletions>,
+            /// Ref components/schemas/branch-restriction-policy
             #[serde(skip_serializing_if = "Option::is_none")]
             restrictions: Option<crate::components::schemas::BranchRestrictionPolicy>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4183,6 +4392,7 @@ mod components {
             transient_environment: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
             production_environment: Option<bool>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
         }
@@ -4217,8 +4427,10 @@ mod components {
             output: CheckRunOutput,
             name: String,
             check_suite: Option<CheckRunCheckSuite>,
+            /// Ref components/schemas/nullable-integration
             app: crate::components::schemas::NullableIntegration,
             pull_requests: Vec<crate::components::schemas::PullRequestMinimal>,
+            /// Ref components/schemas/deployment-simple
             #[serde(skip_serializing_if = "Option::is_none")]
             deployment: Option<crate::components::schemas::DeploymentSimple>,
         }
@@ -4271,10 +4483,13 @@ mod components {
             before: Option<String>,
             after: Option<String>,
             pull_requests: Option<Vec<crate::components::schemas::PullRequestMinimal>>,
+            /// Ref components/schemas/nullable-integration
             app: crate::components::schemas::NullableIntegration,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
             created_at: Option<String>,
             updated_at: Option<String>,
+            /// Ref components/schemas/simple-commit
             head_commit: crate::components::schemas::SimpleCommit,
             latest_check_runs_count: i64,
             check_runs_url: String,
@@ -4295,8 +4510,23 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct CheckSuitePreference {
             preferences: CheckSuitePreferencePreferences,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
         }
+
+        type CodeScanningAnalysisToolName = String;
+
+        type CodeScanningAnalysisToolGuid = String;
+
+        type CodeScanningRef = String;
+
+        type CodeScanningAlertState = String;
+
+        type AlertInstancesUrl = String;
+
+        type CodeScanningAlertDismissedAt = String;
+
+        type CodeScanningAlertDismissedReason = HashMap<String, String>;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAlertRuleSummary {
@@ -4310,15 +4540,26 @@ mod components {
             description: Option<String>,
         }
 
+        type CodeScanningAnalysisToolVersion = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAnalysisTool {
+            /// Ref components/schemas/code-scanning-analysis-tool-name
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<crate::components::schemas::CodeScanningAnalysisToolName>,
+            /// Ref components/schemas/code-scanning-analysis-tool-version
             #[serde(skip_serializing_if = "Option::is_none")]
             version: Option<crate::components::schemas::CodeScanningAnalysisToolVersion>,
+            /// Ref components/schemas/code-scanning-analysis-tool-guid
             #[serde(skip_serializing_if = "Option::is_none")]
             guid: Option<crate::components::schemas::CodeScanningAnalysisToolGuid>,
         }
+
+        type CodeScanningAnalysisAnalysisKey = String;
+
+        type CodeScanningAlertEnvironment = String;
+
+        type CodeScanningAnalysisCategory = String;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAlertLocation {
@@ -4334,6 +4575,8 @@ mod components {
             end_column: Option<i64>,
         }
 
+        type CodeScanningAlertClassification = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAlertInstanceMessage {
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4342,20 +4585,26 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAlertInstance {
+            /// Ref components/schemas/code-scanning-ref
             #[serde(rename="ref", skip_serializing_if = "Option::is_none")]
             ref_: Option<crate::components::schemas::CodeScanningRef>,
+            /// Ref components/schemas/code-scanning-analysis-analysis-key
             #[serde(skip_serializing_if = "Option::is_none")]
             analysis_key: Option<crate::components::schemas::CodeScanningAnalysisAnalysisKey>,
+            /// Ref components/schemas/code-scanning-alert-environment
             #[serde(skip_serializing_if = "Option::is_none")]
             environment: Option<crate::components::schemas::CodeScanningAlertEnvironment>,
+            /// Ref components/schemas/code-scanning-analysis-category
             #[serde(skip_serializing_if = "Option::is_none")]
             category: Option<crate::components::schemas::CodeScanningAnalysisCategory>,
+            /// Ref components/schemas/code-scanning-alert-state
             #[serde(skip_serializing_if = "Option::is_none")]
             state: Option<crate::components::schemas::CodeScanningAlertState>,
             #[serde(skip_serializing_if = "Option::is_none")]
             commit_sha: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             message: Option<CodeScanningAlertInstanceMessage>,
+            /// Ref components/schemas/code-scanning-alert-location
             #[serde(skip_serializing_if = "Option::is_none")]
             location: Option<crate::components::schemas::CodeScanningAlertLocation>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4366,17 +4615,29 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAlertItems {
+            /// Ref components/schemas/alert-number
             number: crate::components::schemas::AlertNumber,
+            /// Ref components/schemas/alert-created-at
             created_at: crate::components::schemas::AlertCreatedAt,
+            /// Ref components/schemas/alert-url
             url: crate::components::schemas::AlertUrl,
+            /// Ref components/schemas/alert-html-url
             html_url: crate::components::schemas::AlertHtmlUrl,
+            /// Ref components/schemas/alert-instances-url
             instances_url: crate::components::schemas::AlertInstancesUrl,
+            /// Ref components/schemas/code-scanning-alert-state
             state: crate::components::schemas::CodeScanningAlertState,
+            /// Ref components/schemas/nullable-simple-user
             dismissed_by: crate::components::schemas::NullableSimpleUser,
+            /// Ref components/schemas/code-scanning-alert-dismissed-at
             dismissed_at: crate::components::schemas::CodeScanningAlertDismissedAt,
+            /// Ref components/schemas/code-scanning-alert-dismissed-reason
             dismissed_reason: crate::components::schemas::CodeScanningAlertDismissedReason,
+            /// Ref components/schemas/code-scanning-alert-rule-summary
             rule: crate::components::schemas::CodeScanningAlertRuleSummary,
+            /// Ref components/schemas/code-scanning-analysis-tool
             tool: crate::components::schemas::CodeScanningAnalysisTool,
+            /// Ref components/schemas/code-scanning-alert-instance
             most_recent_instance: crate::components::schemas::CodeScanningAlertInstance,
         }
 
@@ -4402,36 +4663,69 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAlert {
+            /// Ref components/schemas/alert-number
             number: crate::components::schemas::AlertNumber,
+            /// Ref components/schemas/alert-created-at
             created_at: crate::components::schemas::AlertCreatedAt,
+            /// Ref components/schemas/alert-url
             url: crate::components::schemas::AlertUrl,
+            /// Ref components/schemas/alert-html-url
             html_url: crate::components::schemas::AlertHtmlUrl,
+            /// Ref components/schemas/alert-instances-url
             instances_url: crate::components::schemas::AlertInstancesUrl,
+            /// Ref components/schemas/code-scanning-alert-state
             state: crate::components::schemas::CodeScanningAlertState,
+            /// Ref components/schemas/nullable-simple-user
             dismissed_by: crate::components::schemas::NullableSimpleUser,
+            /// Ref components/schemas/code-scanning-alert-dismissed-at
             dismissed_at: crate::components::schemas::CodeScanningAlertDismissedAt,
+            /// Ref components/schemas/code-scanning-alert-dismissed-reason
             dismissed_reason: crate::components::schemas::CodeScanningAlertDismissedReason,
+            /// Ref components/schemas/code-scanning-alert-rule
             rule: crate::components::schemas::CodeScanningAlertRule,
+            /// Ref components/schemas/code-scanning-analysis-tool
             tool: crate::components::schemas::CodeScanningAnalysisTool,
+            /// Ref components/schemas/code-scanning-alert-instance
             most_recent_instance: crate::components::schemas::CodeScanningAlertInstance,
         }
 
+        type CodeScanningAlertSetState = String;
+
+        type CodeScanningAnalysisSarifId = String;
+
+        type CodeScanningAnalysisCommitSha = String;
+
+        type CodeScanningAnalysisEnvironment = String;
+
+        type CodeScanningAnalysisCreatedAt = String;
+
+        type CodeScanningAnalysisUrl = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningAnalysis {
+            /// Ref components/schemas/code-scanning-ref
             #[serde(rename="ref")]
             ref_: crate::components::schemas::CodeScanningRef,
+            /// Ref components/schemas/code-scanning-analysis-commit-sha
             commit_sha: crate::components::schemas::CodeScanningAnalysisCommitSha,
+            /// Ref components/schemas/code-scanning-analysis-analysis-key
             analysis_key: crate::components::schemas::CodeScanningAnalysisAnalysisKey,
+            /// Ref components/schemas/code-scanning-analysis-environment
             environment: crate::components::schemas::CodeScanningAnalysisEnvironment,
+            /// Ref components/schemas/code-scanning-analysis-category
             #[serde(skip_serializing_if = "Option::is_none")]
             category: Option<crate::components::schemas::CodeScanningAnalysisCategory>,
             error: String,
+            /// Ref components/schemas/code-scanning-analysis-created-at
             created_at: crate::components::schemas::CodeScanningAnalysisCreatedAt,
             results_count: i64,
             rules_count: i64,
             id: i64,
+            /// Ref components/schemas/code-scanning-analysis-url
             url: crate::components::schemas::CodeScanningAnalysisUrl,
+            /// Ref components/schemas/code-scanning-analysis-sarif-id
             sarif_id: crate::components::schemas::CodeScanningAnalysisSarifId,
+            /// Ref components/schemas/code-scanning-analysis-tool
             tool: crate::components::schemas::CodeScanningAnalysisTool,
             deletable: bool,
             warning: String,
@@ -4443,8 +4737,11 @@ mod components {
             confirm_delete_url: Option<String>,
         }
 
+        type CodeScanningAnalysisSarifFile = String;
+
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeScanningSarifsReceipt {
+            /// Ref components/schemas/code-scanning-analysis-sarif-id
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<crate::components::schemas::CodeScanningAnalysisSarifId>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4488,9 +4785,13 @@ mod components {
             id: i64,
             name: String,
             environment_id: Option<String>,
+            /// Ref components/schemas/simple-user
             owner: crate::components::schemas::SimpleUser,
+            /// Ref components/schemas/simple-user
             billable_owner: crate::components::schemas::SimpleUser,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
+            /// Ref components/schemas/nullable-codespace-machine
             machine: crate::components::schemas::NullableCodespaceMachine,
             created_at: String,
             updated_at: String,
@@ -4562,8 +4863,11 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct RepositoryInvitation {
             id: i64,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
+            /// Ref components/schemas/nullable-simple-user
             invitee: crate::components::schemas::NullableSimpleUser,
+            /// Ref components/schemas/nullable-simple-user
             inviter: crate::components::schemas::NullableSimpleUser,
             permissions: String,
             created_at: String,
@@ -4619,6 +4923,7 @@ mod components {
         struct RepositoryCollaboratorPermission {
             permission: String,
             role_name: String,
+            /// Ref components/schemas/nullable-collaborator
             user: crate::components::schemas::NullableCollaborator,
         }
 
@@ -4633,10 +4938,13 @@ mod components {
             position: Option<i64>,
             line: Option<i64>,
             commit_id: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -4661,6 +4969,7 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct AutoMerge {
+            /// Ref components/schemas/simple-user
             enabled_by: crate::components::schemas::SimpleUser,
             merge_method: String,
             commit_title: String,
@@ -4683,8 +4992,10 @@ mod components {
             label: String,
             #[serde(rename="ref")]
             ref_: String,
+            /// Ref components/schemas/repository
             repo: crate::components::schemas::Repository,
             sha: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
         }
 
@@ -4693,20 +5004,30 @@ mod components {
             label: String,
             #[serde(rename="ref")]
             ref_: String,
+            /// Ref components/schemas/repository
             repo: crate::components::schemas::Repository,
             sha: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct PullRequestSimpleLinks {
+            /// Ref components/schemas/link
             comments: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             commits: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             statuses: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             html: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             issue: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             review_comments: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             review_comment: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             #[serde(rename="self")]
             self_: crate::components::schemas::Link,
         }
@@ -4729,9 +5050,11 @@ mod components {
             state: String,
             locked: bool,
             title: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             body: Option<String>,
             labels: Vec<PullRequestSimpleLabels>,
+            /// Ref components/schemas/nullable-milestone
             milestone: crate::components::schemas::NullableMilestone,
             #[serde(skip_serializing_if = "Option::is_none")]
             active_lock_reason: Option<String>,
@@ -4740,6 +5063,7 @@ mod components {
             closed_at: Option<String>,
             merged_at: Option<String>,
             merge_commit_sha: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             assignee: crate::components::schemas::NullableSimpleUser,
             #[serde(skip_serializing_if = "Option::is_none")]
             assignees: Option<Vec<crate::components::schemas::SimpleUser>>,
@@ -4749,8 +5073,11 @@ mod components {
             requested_teams: Option<Vec<crate::components::schemas::Team>>,
             head: PullRequestSimpleHead,
             base: PullRequestSimpleBase,
-            _links: PullRequestSimpleLinks,
+            #[serde(rename="_links")]
+            links: PullRequestSimpleLinks,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/auto_merge
             auto_merge: crate::components::schemas::AutoMerge,
             #[serde(skip_serializing_if = "Option::is_none")]
             draft: Option<bool>,
@@ -4778,6 +5105,7 @@ mod components {
             statuses: Vec<crate::components::schemas::SimpleCommitStatus>,
             sha: String,
             total_count: i64,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
             commit_url: String,
             url: String,
@@ -4795,6 +5123,7 @@ mod components {
             context: String,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
         }
 
@@ -4814,12 +5143,19 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CommunityProfileFiles {
+            /// Ref components/schemas/nullable-code-of-conduct-simple
             code_of_conduct: crate::components::schemas::NullableCodeOfConductSimple,
+            /// Ref components/schemas/nullable-community-health-file
             code_of_conduct_file: crate::components::schemas::NullableCommunityHealthFile,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
+            /// Ref components/schemas/nullable-community-health-file
             contributing: crate::components::schemas::NullableCommunityHealthFile,
+            /// Ref components/schemas/nullable-community-health-file
             readme: crate::components::schemas::NullableCommunityHealthFile,
+            /// Ref components/schemas/nullable-community-health-file
             issue_template: crate::components::schemas::NullableCommunityHealthFile,
+            /// Ref components/schemas/nullable-community-health-file
             pull_request_template: crate::components::schemas::NullableCommunityHealthFile,
         }
 
@@ -4841,7 +5177,9 @@ mod components {
             permalink_url: String,
             diff_url: String,
             patch_url: String,
+            /// Ref components/schemas/commit
             base_commit: crate::components::schemas::Commit,
+            /// Ref components/schemas/commit
             merge_base_commit: crate::components::schemas::Commit,
             status: String,
             ahead_by: i64,
@@ -4883,7 +5221,8 @@ mod components {
             git_url: Option<String>,
             html_url: Option<String>,
             download_url: Option<String>,
-            _links: ContentTreeEntriesLinks,
+            #[serde(rename="_links")]
+            links: ContentTreeEntriesLinks,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -4908,8 +5247,37 @@ mod components {
             download_url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             entries: Option<Vec<ContentTreeEntries>>,
-            _links: ContentTreeLinks,
+            #[serde(rename="_links")]
+            links: ContentTreeLinks,
         }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct ContentDirectoryArrLinks {
+            git: Option<String>,
+            html: Option<String>,
+            #[serde(rename="self")]
+            self_: String,
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct ContentDirectoryArr {
+            #[serde(rename="type")]
+            type_: String,
+            size: i64,
+            name: String,
+            path: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            content: Option<String>,
+            sha: String,
+            url: String,
+            git_url: Option<String>,
+            html_url: Option<String>,
+            download_url: Option<String>,
+            #[serde(rename="_links")]
+            links: ContentDirectoryArrLinks,
+        }
+
+        type ContentDirectory = Vec<ContentDirectoryArr>;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ContentFileLinks {
@@ -4933,7 +5301,8 @@ mod components {
             git_url: Option<String>,
             html_url: Option<String>,
             download_url: Option<String>,
-            _links: ContentFileLinks,
+            #[serde(rename="_links")]
+            links: ContentFileLinks,
             #[serde(skip_serializing_if = "Option::is_none")]
             target: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -4961,7 +5330,8 @@ mod components {
             git_url: Option<String>,
             html_url: Option<String>,
             download_url: Option<String>,
-            _links: ContentSymlinkLinks,
+            #[serde(rename="_links")]
+            links: ContentSymlinkLinks,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -4985,7 +5355,8 @@ mod components {
             git_url: Option<String>,
             html_url: Option<String>,
             download_url: Option<String>,
-            _links: ContentSubmoduleLinks,
+            #[serde(rename="_links")]
+            links: ContentSubmoduleLinks,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -5018,8 +5389,8 @@ mod components {
             download_url: Option<String>,
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
             type_: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            _links: Option<FileCommitContentLinks>,
+            #[serde(rename="_links", skip_serializing_if = "Option::is_none")]
+            links: Option<FileCommitContentLinks>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -5153,6 +5524,7 @@ mod components {
             id: i64,
             node_id: String,
             state: String,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
             description: String,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5166,14 +5538,72 @@ mod components {
             environment_url: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             log_url: Option<String>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
         }
+
+        type WaitTimer = i64;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct DeploymentBranchPolicy {
             protected_branches: bool,
             custom_branch_policies: bool,
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct EnvironmentProtectionRules0 {
+            id: i64,
+            node_id: String,
+            #[serde(rename="type")]
+            type_: String,
+            /// Ref components/schemas/wait-timer
+            #[serde(skip_serializing_if = "Option::is_none")]
+            wait_timer: Option<crate::components::schemas::WaitTimer>,
+        }
+
+        /// AnyOf
+        #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
+        enum EnvironmentProtectionRules1ReviewersReviewerOneOf {
+            SimpleUser(crate::components::schemas::SimpleUser),
+            Team(crate::components::schemas::Team),
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct EnvironmentProtectionRules1Reviewers {
+            /// Ref components/schemas/deployment-reviewer-type
+            #[serde(rename="type", skip_serializing_if = "Option::is_none")]
+            type_: Option<crate::components::schemas::DeploymentReviewerType>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            reviewer: Option<EnvironmentProtectionRules1ReviewersReviewerOneOf>,
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct EnvironmentProtectionRules1 {
+            id: i64,
+            node_id: String,
+            #[serde(rename="type")]
+            type_: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            reviewers: Option<Vec<EnvironmentProtectionRules1Reviewers>>,
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct EnvironmentProtectionRules2 {
+            id: i64,
+            node_id: String,
+            #[serde(rename="type")]
+            type_: String,
+        }
+
+        /// AnyOf
+        #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
+        enum EnvironmentProtectionRulesOneOf {
+            EnvironmentProtectionRules0(EnvironmentProtectionRules0),
+            EnvironmentProtectionRules1(EnvironmentProtectionRules1),
+            EnvironmentProtectionRules2(EnvironmentProtectionRules2),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -5186,7 +5616,8 @@ mod components {
             created_at: String,
             updated_at: String,
             #[serde(skip_serializing_if = "Option::is_none")]
-            protection_rules: Option<Vec<>>,
+            protection_rules: Option<Vec<EnvironmentProtectionRulesOneOf>>,
+            /// Ref components/schemas/deployment_branch_policy
             #[serde(skip_serializing_if = "Option::is_none")]
             deployment_branch_policy: Option<crate::components::schemas::DeploymentBranchPolicy>,
         }
@@ -5299,6 +5730,7 @@ mod components {
             message: String,
             tagger: GitTagTagger,
             object: GitTagObject,
+            /// Ref components/schemas/verification
             #[serde(skip_serializing_if = "Option::is_none")]
             verification: Option<crate::components::schemas::Verification>,
         }
@@ -5344,14 +5776,18 @@ mod components {
             room: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             subdomain: Option<String>,
+            /// Ref components/schemas/webhook-config-url
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<crate::components::schemas::WebhookConfigUrl>,
+            /// Ref components/schemas/webhook-config-insecure-ssl
             #[serde(skip_serializing_if = "Option::is_none")]
             insecure_ssl: Option<crate::components::schemas::WebhookConfigInsecureSsl>,
+            /// Ref components/schemas/webhook-config-content-type
             #[serde(skip_serializing_if = "Option::is_none")]
             content_type: Option<crate::components::schemas::WebhookConfigContentType>,
             #[serde(skip_serializing_if = "Option::is_none")]
             digest: Option<String>,
+            /// Ref components/schemas/webhook-config-secret
             #[serde(skip_serializing_if = "Option::is_none")]
             secret: Option<crate::components::schemas::WebhookConfigSecret>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5374,6 +5810,7 @@ mod components {
             ping_url: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             deliveries_url: Option<String>,
+            /// Ref components/schemas/hook-response
             last_response: crate::components::schemas::HookResponse,
         }
 
@@ -5450,7 +5887,7 @@ mod components {
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct NullableIssueLabels {
+        struct NullableIssueLabels1 {
             #[serde(skip_serializing_if = "Option::is_none")]
             id: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5467,10 +5904,12 @@ mod components {
             default: Option<bool>,
         }
 
+        /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
         enum NullableIssueLabelsOneOf {
             String(String),
-            NullableIssueLabels(NullableIssueLabels),
+            NullableIssueLabels1(NullableIssueLabels1),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -5498,11 +5937,14 @@ mod components {
             title: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             body: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             labels: Vec<NullableIssueLabelsOneOf>,
+            /// Ref components/schemas/nullable-simple-user
             assignee: crate::components::schemas::NullableSimpleUser,
             #[serde(skip_serializing_if = "Option::is_none")]
             assignees: Option<Vec<crate::components::schemas::SimpleUser>>,
+            /// Ref components/schemas/nullable-milestone
             milestone: crate::components::schemas::NullableMilestone,
             locked: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5513,6 +5955,7 @@ mod components {
             closed_at: Option<String>,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             closed_by: Option<crate::components::schemas::NullableSimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -5521,11 +5964,15 @@ mod components {
             body_text: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             timeline_url: Option<String>,
+            /// Ref components/schemas/repository
             #[serde(skip_serializing_if = "Option::is_none")]
             repository: Option<crate::components::schemas::Repository>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -5572,37 +6019,51 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/nullable-simple-user
             actor: crate::components::schemas::NullableSimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-issue
             #[serde(skip_serializing_if = "Option::is_none")]
             issue: Option<crate::components::schemas::NullableIssue>,
+            /// Ref components/schemas/issue-event-label
             #[serde(skip_serializing_if = "Option::is_none")]
             label: Option<crate::components::schemas::IssueEventLabel>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             assignee: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             assigner: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             review_requester: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             requested_reviewer: Option<crate::components::schemas::NullableSimpleUser>,
+            /// Ref components/schemas/team
             #[serde(skip_serializing_if = "Option::is_none")]
             requested_team: Option<crate::components::schemas::Team>,
+            /// Ref components/schemas/issue-event-dismissed-review
             #[serde(skip_serializing_if = "Option::is_none")]
             dismissed_review: Option<crate::components::schemas::IssueEventDismissedReview>,
+            /// Ref components/schemas/issue-event-milestone
             #[serde(skip_serializing_if = "Option::is_none")]
             milestone: Option<crate::components::schemas::IssueEventMilestone>,
+            /// Ref components/schemas/issue-event-project-card
             #[serde(skip_serializing_if = "Option::is_none")]
             project_card: Option<crate::components::schemas::IssueEventProjectCard>,
+            /// Ref components/schemas/issue-event-rename
             #[serde(skip_serializing_if = "Option::is_none")]
             rename: Option<crate::components::schemas::IssueEventRename>,
+            /// Ref components/schemas/author_association
             #[serde(skip_serializing_if = "Option::is_none")]
             author_association: Option<crate::components::schemas::AuthorAssociation>,
             #[serde(skip_serializing_if = "Option::is_none")]
             lock_reason: Option<String>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
         }
@@ -5618,11 +6079,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             label: LabeledIssueEventLabel,
         }
@@ -5638,11 +6101,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             label: UnlabeledIssueEventLabel,
         }
@@ -5652,13 +6117,17 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/integration
             performed_via_github_app: crate::components::schemas::Integration,
+            /// Ref components/schemas/simple-user
             assignee: crate::components::schemas::SimpleUser,
+            /// Ref components/schemas/simple-user
             assigner: crate::components::schemas::SimpleUser,
         }
 
@@ -5667,13 +6136,17 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
+            /// Ref components/schemas/simple-user
             assignee: crate::components::schemas::SimpleUser,
+            /// Ref components/schemas/simple-user
             assigner: crate::components::schemas::SimpleUser,
         }
 
@@ -5687,11 +6160,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             milestone: MilestonedIssueEventMilestone,
         }
@@ -5706,11 +6181,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             milestone: DemilestonedIssueEventMilestone,
         }
@@ -5726,11 +6203,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             rename: RenamedIssueEventRename,
         }
@@ -5740,15 +6219,20 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
+            /// Ref components/schemas/simple-user
             review_requester: crate::components::schemas::SimpleUser,
+            /// Ref components/schemas/team
             #[serde(skip_serializing_if = "Option::is_none")]
             requested_team: Option<crate::components::schemas::Team>,
+            /// Ref components/schemas/simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             requested_reviewer: Option<crate::components::schemas::SimpleUser>,
         }
@@ -5758,15 +6242,20 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
+            /// Ref components/schemas/simple-user
             review_requester: crate::components::schemas::SimpleUser,
+            /// Ref components/schemas/team
             #[serde(skip_serializing_if = "Option::is_none")]
             requested_team: Option<crate::components::schemas::Team>,
+            /// Ref components/schemas/simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             requested_reviewer: Option<crate::components::schemas::SimpleUser>,
         }
@@ -5785,11 +6274,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             dismissed_review: ReviewDismissedIssueEventDismissedReview,
         }
@@ -5799,11 +6290,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             lock_reason: Option<String>,
         }
@@ -5824,11 +6317,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             #[serde(skip_serializing_if = "Option::is_none")]
             project_card: Option<AddedToProjectIssueEventProjectCard>,
@@ -5850,11 +6345,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             #[serde(skip_serializing_if = "Option::is_none")]
             project_card: Option<MovedColumnInProjectIssueEventProjectCard>,
@@ -5876,11 +6373,13 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
             #[serde(skip_serializing_if = "Option::is_none")]
             project_card: Option<RemovedFromProjectIssueEventProjectCard>,
@@ -5902,14 +6401,36 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/integration
             performed_via_github_app: crate::components::schemas::Integration,
             #[serde(skip_serializing_if = "Option::is_none")]
             project_card: Option<ConvertedNoteToIssueIssueEventProjectCard>,
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
+        enum IssueEventForIssue {
+            LabeledIssueEvent(crate::components::schemas::LabeledIssueEvent),
+            UnlabeledIssueEvent(crate::components::schemas::UnlabeledIssueEvent),
+            AssignedIssueEvent(crate::components::schemas::AssignedIssueEvent),
+            UnassignedIssueEvent(crate::components::schemas::UnassignedIssueEvent),
+            MilestonedIssueEvent(crate::components::schemas::MilestonedIssueEvent),
+            DemilestonedIssueEvent(crate::components::schemas::DemilestonedIssueEvent),
+            RenamedIssueEvent(crate::components::schemas::RenamedIssueEvent),
+            ReviewRequestedIssueEvent(crate::components::schemas::ReviewRequestedIssueEvent),
+            ReviewRequestRemovedIssueEvent(crate::components::schemas::ReviewRequestRemovedIssueEvent),
+            ReviewDismissedIssueEvent(crate::components::schemas::ReviewDismissedIssueEvent),
+            LockedIssueEvent(crate::components::schemas::LockedIssueEvent),
+            AddedToProjectIssueEvent(crate::components::schemas::AddedToProjectIssueEvent),
+            MovedColumnInProjectIssueEvent(crate::components::schemas::MovedColumnInProjectIssueEvent),
+            RemovedFromProjectIssueEvent(crate::components::schemas::RemovedFromProjectIssueEvent),
+            ConvertedNoteToIssueIssueEvent(crate::components::schemas::ConvertedNoteToIssueIssueEvent),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -5926,6 +6447,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct TimelineCommentEvent {
             event: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             id: i64,
             node_id: String,
@@ -5937,13 +6459,17 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             body_html: Option<String>,
             html_url: String,
+            /// Ref components/schemas/simple-user
             user: crate::components::schemas::SimpleUser,
             created_at: String,
             updated_at: String,
             issue_url: String,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -5952,6 +6478,7 @@ mod components {
         struct TimelineCrossReferencedEventSource {
             #[serde(rename="type", skip_serializing_if = "Option::is_none")]
             type_: Option<String>,
+            /// Ref components/schemas/issue
             #[serde(skip_serializing_if = "Option::is_none")]
             issue: Option<crate::components::schemas::Issue>,
         }
@@ -5959,6 +6486,7 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct TimelineCrossReferencedEvent {
             event: String,
+            /// Ref components/schemas/simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             actor: Option<crate::components::schemas::SimpleUser>,
             created_at: String,
@@ -6038,12 +6566,14 @@ mod components {
             event: String,
             id: i64,
             node_id: String,
+            /// Ref components/schemas/simple-user
             user: crate::components::schemas::SimpleUser,
             body: Option<String>,
             state: String,
             html_url: String,
             pull_request_url: String,
-            _links: TimelineReviewedEventLinks,
+            #[serde(rename="_links")]
+            links: TimelineReviewedEventLinks,
             #[serde(skip_serializing_if = "Option::is_none")]
             submitted_at: Option<String>,
             commit_id: String,
@@ -6051,6 +6581,7 @@ mod components {
             body_html: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             body_text: Option<String>,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
         }
 
@@ -6091,14 +6622,17 @@ mod components {
             original_commit_id: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             in_reply_to_id: Option<i64>,
+            /// Ref components/schemas/simple-user
             user: crate::components::schemas::SimpleUser,
             body: String,
             created_at: String,
             updated_at: String,
             html_url: String,
             pull_request_url: String,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
-            _links: PullRequestReviewCommentLinks,
+            #[serde(rename="_links")]
+            links: PullRequestReviewCommentLinks,
             #[serde(skip_serializing_if = "Option::is_none")]
             start_line: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6111,6 +6645,7 @@ mod components {
             original_line: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             side: Option<String>,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6146,12 +6681,15 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
+            /// Ref components/schemas/simple-user
             assignee: crate::components::schemas::SimpleUser,
         }
 
@@ -6160,12 +6698,15 @@ mod components {
             id: i64,
             node_id: String,
             url: String,
+            /// Ref components/schemas/simple-user
             actor: crate::components::schemas::SimpleUser,
             event: String,
             commit_id: Option<String>,
             commit_url: Option<String>,
             created_at: String,
+            /// Ref components/schemas/nullable-integration
             performed_via_github_app: crate::components::schemas::NullableIntegration,
+            /// Ref components/schemas/simple-user
             assignee: crate::components::schemas::SimpleUser,
         }
 
@@ -6208,7 +6749,9 @@ mod components {
             type_: String,
             content: String,
             encoding: String,
-            _links: LicenseContentLinks,
+            #[serde(rename="_links")]
+            links: LicenseContentLinks,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
         }
 
@@ -6233,6 +6776,7 @@ mod components {
             state: String,
             title: String,
             description: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             creator: crate::components::schemas::NullableSimpleUser,
             open_issues: i64,
             closed_issues: i64,
@@ -6269,9 +6813,11 @@ mod components {
             custom_404: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             html_url: Option<String>,
+            /// Ref components/schemas/pages-source-hash
             #[serde(skip_serializing_if = "Option::is_none")]
             source: Option<crate::components::schemas::PagesSourceHash>,
             public: bool,
+            /// Ref components/schemas/pages-https-certificate
             #[serde(skip_serializing_if = "Option::is_none")]
             https_certificate: Option<crate::components::schemas::PagesHttpsCertificate>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6288,6 +6834,7 @@ mod components {
             url: String,
             status: String,
             error: PageBuildError,
+            /// Ref components/schemas/nullable-simple-user
             pusher: crate::components::schemas::NullableSimpleUser,
             commit: String,
             duration: i64,
@@ -6746,6 +7293,7 @@ mod components {
             allow_squash_merge: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
             allow_rebase_merge: Option<bool>,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
             pushed_at: String,
             size: i64,
@@ -6797,13 +7345,21 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct PullRequestLinks {
+            /// Ref components/schemas/link
             comments: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             commits: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             statuses: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             html: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             issue: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             review_comments: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             review_comment: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             #[serde(rename="self")]
             self_: crate::components::schemas::Link,
         }
@@ -6826,9 +7382,11 @@ mod components {
             state: String,
             locked: bool,
             title: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             body: Option<String>,
             labels: Vec<PullRequestLabels>,
+            /// Ref components/schemas/nullable-milestone
             milestone: crate::components::schemas::NullableMilestone,
             #[serde(skip_serializing_if = "Option::is_none")]
             active_lock_reason: Option<String>,
@@ -6837,6 +7395,7 @@ mod components {
             closed_at: Option<String>,
             merged_at: Option<String>,
             merge_commit_sha: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             assignee: crate::components::schemas::NullableSimpleUser,
             #[serde(skip_serializing_if = "Option::is_none")]
             assignees: Option<Vec<crate::components::schemas::SimpleUser>>,
@@ -6846,8 +7405,11 @@ mod components {
             requested_teams: Option<Vec<crate::components::schemas::TeamSimple>>,
             head: PullRequestHead,
             base: PullRequestBase,
-            _links: PullRequestLinks,
+            #[serde(rename="_links")]
+            links: PullRequestLinks,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
+            /// Ref components/schemas/auto_merge
             auto_merge: crate::components::schemas::AutoMerge,
             #[serde(skip_serializing_if = "Option::is_none")]
             draft: Option<bool>,
@@ -6856,6 +7418,7 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             rebaseable: Option<bool>,
             mergeable_state: String,
+            /// Ref components/schemas/nullable-simple-user
             merged_by: crate::components::schemas::NullableSimpleUser,
             comments: i64,
             review_comments: i64,
@@ -6899,12 +7462,14 @@ mod components {
         struct PullRequestReview {
             id: i64,
             node_id: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             body: String,
             state: String,
             html_url: String,
             pull_request_url: String,
-            _links: PullRequestReviewLinks,
+            #[serde(rename="_links")]
+            links: PullRequestReviewLinks,
             #[serde(skip_serializing_if = "Option::is_none")]
             submitted_at: Option<String>,
             commit_id: String,
@@ -6912,14 +7477,18 @@ mod components {
             body_html: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             body_text: Option<String>,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ReviewCommentLinks {
+            /// Ref components/schemas/link
             #[serde(rename="self")]
             self_: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             html: crate::components::schemas::Link,
+            /// Ref components/schemas/link
             pull_request: crate::components::schemas::Link,
         }
 
@@ -6937,18 +7506,22 @@ mod components {
             original_commit_id: String,
             #[serde(skip_serializing_if = "Option::is_none")]
             in_reply_to_id: Option<i64>,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             body: String,
             created_at: String,
             updated_at: String,
             html_url: String,
             pull_request_url: String,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
-            _links: ReviewCommentLinks,
+            #[serde(rename="_links")]
+            links: ReviewCommentLinks,
             #[serde(skip_serializing_if = "Option::is_none")]
             body_text: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             body_html: Option<String>,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -6979,6 +7552,7 @@ mod components {
             download_count: i64,
             created_at: String,
             updated_at: String,
+            /// Ref components/schemas/nullable-simple-user
             uploader: crate::components::schemas::NullableSimpleUser,
         }
 
@@ -7001,6 +7575,7 @@ mod components {
             prerelease: bool,
             created_at: String,
             published_at: Option<String>,
+            /// Ref components/schemas/simple-user
             author: crate::components::schemas::SimpleUser,
             assets: Vec<crate::components::schemas::ReleaseAsset>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7011,6 +7586,7 @@ mod components {
             mentions_count: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             discussion_url: Option<String>,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -7023,22 +7599,29 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct SecretScanningAlert {
+            /// Ref components/schemas/alert-number
             #[serde(skip_serializing_if = "Option::is_none")]
             number: Option<crate::components::schemas::AlertNumber>,
+            /// Ref components/schemas/alert-created-at
             #[serde(skip_serializing_if = "Option::is_none")]
             created_at: Option<crate::components::schemas::AlertCreatedAt>,
+            /// Ref components/schemas/alert-url
             #[serde(skip_serializing_if = "Option::is_none")]
             url: Option<crate::components::schemas::AlertUrl>,
+            /// Ref components/schemas/alert-html-url
             #[serde(skip_serializing_if = "Option::is_none")]
             html_url: Option<crate::components::schemas::AlertHtmlUrl>,
             #[serde(skip_serializing_if = "Option::is_none")]
             locations_url: Option<String>,
+            /// Ref components/schemas/secret-scanning-alert-state
             #[serde(skip_serializing_if = "Option::is_none")]
             state: Option<crate::components::schemas::SecretScanningAlertState>,
+            /// Ref components/schemas/secret-scanning-alert-resolution
             #[serde(skip_serializing_if = "Option::is_none")]
             resolution: Option<crate::components::schemas::SecretScanningAlertResolution>,
             #[serde(skip_serializing_if = "Option::is_none")]
             resolved_at: Option<String>,
+            /// Ref components/schemas/nullable-simple-user
             #[serde(skip_serializing_if = "Option::is_none")]
             resolved_by: Option<crate::components::schemas::NullableSimpleUser>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7050,8 +7633,11 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct Stargazer {
             starred_at: String,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
         }
+
+        type CodeFrequencyStat = Vec<i64>;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CommitActivity {
@@ -7074,6 +7660,7 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ContributorActivity {
+            /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
             total: i64,
             weeks: Vec<ContributorActivityWeeks>,
@@ -7155,20 +7742,20 @@ mod components {
         struct ScimGroupListEnterpriseResourcesMembers {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            $ref: Option<String>,
+            #[serde(rename="$ref", skip_serializing_if = "Option::is_none")]
+            ref_: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             display: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimGroupListEnterpriseResourcesMeta {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            resourceType: Option<String>,
+            #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
+            resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             created: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            lastModified: Option<String>,
+            #[serde(rename="lastModified", skip_serializing_if = "Option::is_none")]
+            last_modified: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             location: Option<String>,
         }
@@ -7177,10 +7764,10 @@ mod components {
         struct ScimGroupListEnterpriseResources {
             schemas: Vec<String>,
             id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            externalId: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            displayName: Option<String>,
+            #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
+            external_id: Option<String>,
+            #[serde(rename="displayName", skip_serializing_if = "Option::is_none")]
+            display_name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             members: Option<Vec<ScimGroupListEnterpriseResourcesMembers>>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7190,30 +7777,34 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimGroupListEnterprise {
             schemas: Vec<String>,
-            totalResults: i64,
-            itemsPerPage: i64,
-            startIndex: i64,
-            Resources: Vec<ScimGroupListEnterpriseResources>,
+            #[serde(rename="totalResults")]
+            total_results: i64,
+            #[serde(rename="itemsPerPage")]
+            items_per_page: i64,
+            #[serde(rename="startIndex")]
+            start_index: i64,
+            #[serde(rename="Resources")]
+            resources: Vec<ScimGroupListEnterpriseResources>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimEnterpriseGroupMembers {
             #[serde(skip_serializing_if = "Option::is_none")]
             value: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            $ref: Option<String>,
+            #[serde(rename="$ref", skip_serializing_if = "Option::is_none")]
+            ref_: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             display: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimEnterpriseGroupMeta {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            resourceType: Option<String>,
+            #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
+            resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             created: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            lastModified: Option<String>,
+            #[serde(rename="lastModified", skip_serializing_if = "Option::is_none")]
+            last_modified: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             location: Option<String>,
         }
@@ -7222,10 +7813,10 @@ mod components {
         struct ScimEnterpriseGroup {
             schemas: Vec<String>,
             id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            externalId: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            displayName: Option<String>,
+            #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
+            external_id: Option<String>,
+            #[serde(rename="displayName", skip_serializing_if = "Option::is_none")]
+            display_name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             members: Option<Vec<ScimEnterpriseGroupMembers>>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7234,10 +7825,10 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimUserListEnterpriseResourcesName {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            givenName: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            familyName: Option<String>,
+            #[serde(rename="givenName", skip_serializing_if = "Option::is_none")]
+            given_name: Option<String>,
+            #[serde(rename="familyName", skip_serializing_if = "Option::is_none")]
+            family_name: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -7258,12 +7849,12 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimUserListEnterpriseResourcesMeta {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            resourceType: Option<String>,
+            #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
+            resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             created: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            lastModified: Option<String>,
+            #[serde(rename="lastModified", skip_serializing_if = "Option::is_none")]
+            last_modified: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             location: Option<String>,
         }
@@ -7272,10 +7863,10 @@ mod components {
         struct ScimUserListEnterpriseResources {
             schemas: Vec<String>,
             id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            externalId: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            userName: Option<String>,
+            #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
+            external_id: Option<String>,
+            #[serde(rename="userName", skip_serializing_if = "Option::is_none")]
+            user_name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<ScimUserListEnterpriseResourcesName>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7291,18 +7882,22 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimUserListEnterprise {
             schemas: Vec<String>,
-            totalResults: i64,
-            itemsPerPage: i64,
-            startIndex: i64,
-            Resources: Vec<ScimUserListEnterpriseResources>,
+            #[serde(rename="totalResults")]
+            total_results: i64,
+            #[serde(rename="itemsPerPage")]
+            items_per_page: i64,
+            #[serde(rename="startIndex")]
+            start_index: i64,
+            #[serde(rename="Resources")]
+            resources: Vec<ScimUserListEnterpriseResources>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimEnterpriseUserName {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            givenName: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            familyName: Option<String>,
+            #[serde(rename="givenName", skip_serializing_if = "Option::is_none")]
+            given_name: Option<String>,
+            #[serde(rename="familyName", skip_serializing_if = "Option::is_none")]
+            family_name: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -7323,12 +7918,12 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimEnterpriseUserMeta {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            resourceType: Option<String>,
+            #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
+            resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             created: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            lastModified: Option<String>,
+            #[serde(rename="lastModified", skip_serializing_if = "Option::is_none")]
+            last_modified: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             location: Option<String>,
         }
@@ -7337,10 +7932,10 @@ mod components {
         struct ScimEnterpriseUser {
             schemas: Vec<String>,
             id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            externalId: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            userName: Option<String>,
+            #[serde(rename="externalId", skip_serializing_if = "Option::is_none")]
+            external_id: Option<String>,
+            #[serde(rename="userName", skip_serializing_if = "Option::is_none")]
+            user_name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             name: Option<ScimEnterpriseUserName>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7355,8 +7950,10 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimUserName {
-            givenName: Option<String>,
-            familyName: Option<String>,
+            #[serde(rename="givenName")]
+            given_name: Option<String>,
+            #[serde(rename="familyName")]
+            family_name: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             formatted: Option<String>,
         }
@@ -7370,24 +7967,26 @@ mod components {
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimUserMeta {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            resourceType: Option<String>,
+            #[serde(rename="resourceType", skip_serializing_if = "Option::is_none")]
+            resource_type: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             created: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            lastModified: Option<String>,
+            #[serde(rename="lastModified", skip_serializing_if = "Option::is_none")]
+            last_modified: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             location: Option<String>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
-        struct ScimUserOperationsValue;
+        struct ScimUserOperationsValue1;
 
+        /// OneOf
         #[derive(Debug, Serialize, Deserialize)]
+        #[serde(untagged)]
         enum ScimUserOperationsValueOneOf {
             String(String),
-            ScimUserOperationsValue(ScimUserOperationsValue),
-            Vec(Vec<>),
+            ScimUserOperationsValue1(ScimUserOperationsValue1),
+            Vec(Vec<HashMap<String, String>>),
         }
 
         #[derive(Debug, Serialize, Deserialize)]
@@ -7403,10 +8002,12 @@ mod components {
         struct ScimUser {
             schemas: Vec<String>,
             id: String,
-            externalId: Option<String>,
-            userName: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            displayName: Option<String>,
+            #[serde(rename="externalId")]
+            external_id: Option<String>,
+            #[serde(rename="userName")]
+            user_name: Option<String>,
+            #[serde(rename="displayName", skip_serializing_if = "Option::is_none")]
+            display_name: Option<String>,
             name: ScimUserName,
             emails: Vec<ScimUserEmails>,
             active: bool,
@@ -7416,17 +8017,45 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             operations: Option<Vec<ScimUserOperations>>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            groups: Option<Vec<>>,
+            groups: Option<Vec<HashMap<String, String>>>,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct ScimUserList {
             schemas: Vec<String>,
-            totalResults: i64,
-            itemsPerPage: i64,
-            startIndex: i64,
-            Resources: Vec<crate::components::schemas::ScimUser>,
+            #[serde(rename="totalResults")]
+            total_results: i64,
+            #[serde(rename="itemsPerPage")]
+            items_per_page: i64,
+            #[serde(rename="startIndex")]
+            start_index: i64,
+            #[serde(rename="Resources")]
+            resources: Vec<crate::components::schemas::ScimUser>,
         }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct SearchResultTextMatchesArrMatches {
+            #[serde(skip_serializing_if = "Option::is_none")]
+            text: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            indices: Option<Vec<i64>>,
+        }
+
+        #[derive(Debug, Serialize, Deserialize)]
+        struct SearchResultTextMatchesArr {
+            #[serde(skip_serializing_if = "Option::is_none")]
+            object_url: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            object_type: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            property: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            fragment: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            matches: Option<Vec<SearchResultTextMatchesArrMatches>>,
+        }
+
+        type SearchResultTextMatches = Vec<SearchResultTextMatchesArr>;
 
         #[derive(Debug, Serialize, Deserialize)]
         struct CodeSearchResultItem {
@@ -7436,6 +8065,7 @@ mod components {
             url: String,
             git_url: String,
             html_url: String,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
             score: i64,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7446,6 +8076,7 @@ mod components {
             last_modified_at: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             line_numbers: Option<Vec<String>>,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
         }
@@ -7466,11 +8097,13 @@ mod components {
         #[derive(Debug, Serialize, Deserialize)]
         struct CommitSearchResultItemCommit {
             author: CommitSearchResultItemCommitAuthor,
+            /// Ref components/schemas/nullable-git-user
             committer: crate::components::schemas::NullableGitUser,
             comment_count: i64,
             message: String,
             tree: CommitSearchResultItemCommitTree,
             url: String,
+            /// Ref components/schemas/verification
             #[serde(skip_serializing_if = "Option::is_none")]
             verification: Option<crate::components::schemas::Verification>,
         }
@@ -7492,12 +8125,16 @@ mod components {
             html_url: String,
             comments_url: String,
             commit: CommitSearchResultItemCommit,
+            /// Ref components/schemas/nullable-simple-user
             author: crate::components::schemas::NullableSimpleUser,
+            /// Ref components/schemas/nullable-git-user
             committer: crate::components::schemas::NullableGitUser,
             parents: Vec<CommitSearchResultItemParents>,
+            /// Ref components/schemas/minimal-repository
             repository: crate::components::schemas::MinimalRepository,
             score: i64,
             node_id: String,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
         }
@@ -7547,15 +8184,19 @@ mod components {
             active_lock_reason: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             assignees: Option<Vec<crate::components::schemas::SimpleUser>>,
+            /// Ref components/schemas/nullable-simple-user
             user: crate::components::schemas::NullableSimpleUser,
             labels: Vec<IssueSearchResultItemLabels>,
             state: String,
+            /// Ref components/schemas/nullable-simple-user
             assignee: crate::components::schemas::NullableSimpleUser,
+            /// Ref components/schemas/nullable-milestone
             milestone: crate::components::schemas::NullableMilestone,
             comments: i64,
             created_at: String,
             updated_at: String,
             closed_at: Option<String>,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7563,9 +8204,11 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             body: Option<String>,
             score: i64,
+            /// Ref components/schemas/author_association
             author_association: crate::components::schemas::AuthorAssociation,
             #[serde(skip_serializing_if = "Option::is_none")]
             draft: Option<bool>,
+            /// Ref components/schemas/repository
             #[serde(skip_serializing_if = "Option::is_none")]
             repository: Option<crate::components::schemas::Repository>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7574,8 +8217,10 @@ mod components {
             body_text: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
             timeline_url: Option<String>,
+            /// Ref components/schemas/nullable-integration
             #[serde(skip_serializing_if = "Option::is_none")]
             performed_via_github_app: Option<crate::components::schemas::NullableIntegration>,
+            /// Ref components/schemas/reaction-rollup
             #[serde(skip_serializing_if = "Option::is_none")]
             reactions: Option<crate::components::schemas::ReactionRollup>,
         }
@@ -7590,6 +8235,7 @@ mod components {
             default: bool,
             description: Option<String>,
             score: i64,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
         }
@@ -7611,6 +8257,7 @@ mod components {
             node_id: String,
             name: String,
             full_name: String,
+            /// Ref components/schemas/nullable-simple-user
             owner: crate::components::schemas::NullableSimpleUser,
             private: bool,
             html_url: String,
@@ -7686,9 +8333,11 @@ mod components {
             disabled: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             visibility: Option<String>,
+            /// Ref components/schemas/nullable-license-simple
             license: crate::components::schemas::NullableLicenseSimple,
             #[serde(skip_serializing_if = "Option::is_none")]
             permissions: Option<RepoSearchResultItemPermissions>,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7762,6 +8411,7 @@ mod components {
             repository_count: Option<i64>,
             #[serde(skip_serializing_if = "Option::is_none")]
             logo_url: Option<String>,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7814,6 +8464,7 @@ mod components {
             site_admin: bool,
             #[serde(skip_serializing_if = "Option::is_none")]
             hireable: Option<bool>,
+            /// Ref components/schemas/search-result-text-matches
             #[serde(skip_serializing_if = "Option::is_none")]
             text_matches: Option<crate::components::schemas::SearchResultTextMatches>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7926,9 +8577,9 @@ mod components {
             #[serde(skip_serializing_if = "Option::is_none")]
             public_key: Option<String>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            emails: Option<Vec<>>,
+            emails: Option<Vec<HashMap<String, String>>>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            subkeys: Option<Vec<>>,
+            subkeys: Option<Vec<HashMap<String, String>>>,
             #[serde(skip_serializing_if = "Option::is_none")]
             can_sign: Option<bool>,
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -7996,13 +8647,16 @@ mod components {
             on_free_trial: bool,
             free_trial_ends_on: Option<String>,
             updated_at: Option<String>,
+            /// Ref components/schemas/marketplace-account
             account: crate::components::schemas::MarketplaceAccount,
+            /// Ref components/schemas/marketplace-listing-plan
             plan: crate::components::schemas::MarketplaceListingPlan,
         }
 
         #[derive(Debug, Serialize, Deserialize)]
         struct StarredRepository {
             starred_at: String,
+            /// Ref components/schemas/repository
             repo: crate::components::schemas::Repository,
         }
 
